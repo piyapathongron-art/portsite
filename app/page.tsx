@@ -34,9 +34,15 @@ export default function Home() {
             x: gOutlineX,
             y: gOutlineY,
           }}
-          className="absolute z-0 bottom-20 text-[60vw] md:text-[50rem] font-medium leading-none tracking-tighter select-none pointer-events-none flex items-center justify-center"
+          className="absolute z-0 bottom-20 text-[60vw] md:text-[50rem] font-medium leading-none tracking-tighter flex items-center justify-center"
         >
-          <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255, 255, 255, 0.1)" }}>
+          <span
+            className="text-transparent bg-clip-text bg-gradient-to-b from-zinc-600/30 via-zinc-800/10 to-transparent opacity-50 "
+            style={{
+              WebkitTextStroke: "1px rgba(255, 255, 255, 0.15)",
+              textShadow: "0px -1px 1px rgba(255, 255, 255, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.8), 0px 15px 30px rgba(0, 0, 0, 0.9), 0px 30px 60px rgba(249, 115, 22, 0.08)"
+            }}
+          >
             &lt;/&gt;
           </span>
         </motion.div>
