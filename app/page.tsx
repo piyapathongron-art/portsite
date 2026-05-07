@@ -1,12 +1,38 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { Search, Menu, Play } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import TypeIt from "typeit-react";
+import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 export default function Home() {
   const containerRef = useRef(null);
+
+  // Subtle Mouse Parallax Logic
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  const springConfig = { damping: 30, stiffness: 100, mass: 2 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  const parallaxX = useTransform(smoothMouseX, [-1, 1], [-15, 15]);
+  const parallaxY = useTransform(smoothMouseY, [-1, 1], [-15, 15]);
+  const rotateX = useTransform(smoothMouseY, [-1, 1], [3, -3]);
+  const rotateY = useTransform(smoothMouseX, [-1, 1], [-3, 3]);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
@@ -33,18 +59,26 @@ export default function Home() {
           style={{
             x: gOutlineX,
             y: gOutlineY,
+            perspective: 1000,
           }}
-          className="absolute z-0 bottom-20 text-[60vw] md:text-[50rem] font-medium leading-none tracking-tighter flex items-center justify-center"
+          className="absolute z-0 bottom-20 text-[60vw] md:text-[50rem] font-medium leading-none tracking-tighter flex items-center justify-center pointer-events-none"
         >
-          <span
-            className="text-transparent bg-clip-text bg-gradient-to-b from-zinc-600/30 via-zinc-800/10 to-transparent opacity-50 "
+          <motion.span
+            className="text-transparent bg-clip-text bg-gradient-to-b from-zinc-600/30 via-zinc-800/10 to-transparent opacity-50"
             style={{
+              x: parallaxX,
+              y: parallaxY,
+              rotateX,
+              rotateY,
               WebkitTextStroke: "1px rgba(255, 255, 255, 0.15)",
               textShadow: "0px -1px 1px rgba(255, 255, 255, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.8), 0px 15px 30px rgba(0, 0, 0, 0.9), 0px 30px 60px rgba(249, 115, 22, 0.08)"
             }}
           >
-            &lt;/&gt;
-          </span>
+            <span className="animate-fade-up-10">
+
+              &lt;/&gt;
+            </span>
+          </motion.span>
         </motion.div>
 
         {/* Scroll Indicator for Loader */}
@@ -58,7 +92,7 @@ export default function Home() {
 
 
         {/* LOADING SCREEN (Only the first letter 'g') */}
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full animate-fade-up-20 ">
           <motion.div
             style={{
               opacity: loaderOpacity,
@@ -120,17 +154,21 @@ export default function Home() {
               <nav className="absolute top-0 w-full p-6 md:p-10 flex justify-between items-start z-50">
                 {/* Left Social Links */}
                 <div className="flex gap-4 md:gap-6 text-[10px] md:text-xs font-semibold tracking-widest text-zinc-400 mt-2">
-                  <span className="hover:text-white cursor-pointer transition-colors">FB</span>
-                  <span className="text-orange-500">•</span>
-                  <span className="hover:text-white cursor-pointer transition-colors">IN</span>
-                  <span className="text-orange-500">•</span>
-                  <span className="hover:text-white cursor-pointer transition-colors">DR</span>
-                  <span className="text-orange-500">•</span>
-                  <span className="hover:text-white cursor-pointer transition-colors">BE</span>
+                  <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+                    <FaFacebookF className="text-[12px] md:text-[14px]" /> FB
+                  </span>
+                  <span className="text-orange-500 flex items-center">•</span>
+                  <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+                    <FaGithub className="text-[12px] md:text-[14px]" /> GH
+                  </span>
+                  <span className="text-orange-500 flex items-center">•</span>
+                  <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+                    <FaLinkedinIn className="text-[12px] md:text-[14px]" /> LI
+                  </span>
                 </div>
 
                 {/* Center Logo */}
-                <div className="text-3xl md:text-4xl font-medium tracking-tight relative -ml-12 md:ml-0">
+                <div className="text-3xl md:text-4xl font-medium relative mr-25 md:ml-0">
                   arty
                   {/* Orange dot for the 'g' in logo */}
                   <span className="absolute top-[60%] left-[12px] w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
@@ -162,7 +200,7 @@ export default function Home() {
               </div>
 
               {/* Main Headlines */}
-              <div className="absolute top-[25%] left-[8%] md:left-[12%] max-w-5xl z-20">
+              <div className="absolute top-[25%] left-[8%] md:left-[12%] max-w-5xl z-20 cursor-default">
                 <h1 className="text-5xl md:text-[5.5rem] font-medium tracking-tight leading-[1.1] mb-2">
                   Architecting.<span className="text-zinc-500">Scalable.Systems.</span>
                 </h1>
