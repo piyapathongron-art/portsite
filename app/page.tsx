@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Search, Menu, Play } from "lucide-react";
 import { useRef } from "react";
+import TypeIt from "typeit-react";
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -67,8 +68,31 @@ export default function Home() {
               <span className="text-orange-400 text-4xl">I'm</span> Piyapat Hongron
             </div>
 
-            <div className="relative text-4xl md:text-6xl font-medium">
-              <span className="text-4xl font-extralight">A</span> <span className="text-orange-400">Full-Stack</span> Developer
+            <div className="relative text-4xl md:text-6xl font-medium mt-5">
+              <span className="text-4xl font-extralight">A</span>{" "}
+              <TypeIt
+                options={{
+                  speed: 80,
+                  waitUntilVisible: true,
+                  html: true,
+                  loop: true,
+                }}
+                getBeforeInit={(instance) => {
+                  instance
+                    .type("<span class='text-orange-400'>Full-Stack</span> Developer")
+                    .pause(2500)
+                    .delete(20)
+                    .pause(500)
+                    .type("<span class='text-orange-400'>Creative</span> Architect")
+                    .pause(2500)
+                    .delete(18)
+                    .pause(500)
+                    .type("<span class='text-orange-400'>Next.js</span> Specialist")
+                    .pause(2500)
+                    .delete(18);
+                  return instance;
+                }}
+              />
             </div>
 
           </motion.div>
