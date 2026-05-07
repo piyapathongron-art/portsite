@@ -1,126 +1,216 @@
-import { motion } from "framer-motion";
+"use client";
+
+import type { ComponentType, CSSProperties } from "react";
+import { motion, type MotionValue } from "framer-motion";
 import {
-  SiJavascript, SiTypescript, SiPython,
-  SiNodedotjs, SiExpress, SiReact, SiNextdotjs, SiTailwindcss, SiSocketdotio,
-  SiMysql, SiPrisma, SiPostgresql, SiSupabase,
-  SiDocker, SiVercel, SiGit, SiFigma, SiNestjs, SiVuedotjs
+  SiJavascript, SiTypescript, SiHtml5, SiCss, SiPython,
+  SiNodedotjs, SiExpress, SiReact, SiNextdotjs, SiNestjs, SiVuedotjs, SiAngular, SiTailwindcss,
+  SiSocketdotio, SiJsonwebtokens,
+  SiMysql, SiPrisma, SiPostgresql, SiSupabase, SiFirebase, SiMongodb,
+  SiDocker, SiVercel, SiRender, SiAxios, SiSwagger, SiPostman,
+  SiFigma, SiGithub,
 } from "react-icons/si";
-import { Search, Bot, Wrench, Database, Globe } from "lucide-react";
+import { Layers, Lock, Globe2, Sparkles, MousePointer2, Bot, Scissors } from "lucide-react";
 
-const BENTO_ITEM_CLASSES = "relative bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-6 flex flex-col justify-between overflow-hidden group hover:bg-zinc-800/50 transition-colors duration-300";
+type IconType = ComponentType<{ size?: number | string; className?: string }>;
+type Tier = "lg" | "md" | "sm";
 
-export function TechStack() {
+type Skill = {
+  name: string;
+  category: string;
+  selfScore: number;
+  marketWeight: number;
+  Icon: IconType;
+  color: string;
+  tier: Tier;
+};
+
+// final = selfScore + marketWeight (out of 20)
+//   lg → flagship core stack
+//   md → final ≥ 15 with strong market signal (Docker @ 6/9 still earns md)
+//   sm → basics, secondary frameworks, niche tooling
+//
+// Order is intentionally interleaved so dense column packing scatters
+// large/medium/small cards organically instead of clumping by tier.
+const SKILLS: Skill[] = [
+  { name: "React.js", category: "Frontend", selfScore: 10, marketWeight: 10, Icon: SiReact, color: "#61DAFB", tier: "lg" },
+  { name: "HTML", category: "Language", selfScore: 10, marketWeight: 5, Icon: SiHtml5, color: "#E34F26", tier: "sm" },
+  { name: "CSS", category: "Language", selfScore: 10, marketWeight: 6, Icon: SiCss, color: "#1572B6", tier: "sm" },
+  { name: "JavaScript", category: "Language", selfScore: 10, marketWeight: 10, Icon: SiJavascript, color: "#F7DF1E", tier: "md" },
+  { name: "Vue.js", category: "Frontend", selfScore: 5, marketWeight: 6, Icon: SiVuedotjs, color: "#4FC08D", tier: "sm" },
+  { name: "Vercel", category: "Hosting", selfScore: 8, marketWeight: 7, Icon: SiVercel, color: "#FFFFFF", tier: "sm" },
+  { name: "TypeScript", category: "Language", selfScore: 8, marketWeight: 10, Icon: SiTypescript, color: "#3178C6", tier: "lg" },
+  { name: "Python", category: "Language", selfScore: 5, marketWeight: 7, Icon: SiPython, color: "#3776AB", tier: "sm" },
+  { name: "Express.js", category: "Backend", selfScore: 10, marketWeight: 8, Icon: SiExpress, color: "#FFFFFF", tier: "md" },
+  { name: "JWT", category: "Auth", selfScore: 8, marketWeight: 7, Icon: SiJsonwebtokens, color: "#D63AFF", tier: "sm" },
+  { name: "MongoDB", category: "Database", selfScore: 6, marketWeight: 8, Icon: SiMongodb, color: "#47A248", tier: "sm" },
+  { name: "Tailwind CSS", category: "Frontend", selfScore: 10, marketWeight: 9, Icon: SiTailwindcss, color: "#06B6D4", tier: "md" },
+  { name: "Next.js", category: "Fullstack", selfScore: 7, marketWeight: 10, Icon: SiNextdotjs, color: "#FFFFFF", tier: "lg" },
+  { name: "Bcrypt", category: "Auth", selfScore: 8, marketWeight: 5, Icon: Lock, color: "#A1A1AA", tier: "sm" },
+  { name: "Angular", category: "Frontend", selfScore: 5, marketWeight: 5, Icon: SiAngular, color: "#DD0031", tier: "sm" },
+  { name: "PostgreSQL", category: "Database", selfScore: 8, marketWeight: 9, Icon: SiPostgresql, color: "#4169E1", tier: "md" },
+  { name: "Firebase", category: "Database", selfScore: 6, marketWeight: 6, Icon: SiFirebase, color: "#FFCA28", tier: "sm" },
+  { name: "Nest.js", category: "Backend", selfScore: 5, marketWeight: 6, Icon: SiNestjs, color: "#E0234E", tier: "sm" },
+  { name: "MySQL", category: "Database", selfScore: 10, marketWeight: 7, Icon: SiMysql, color: "#4479A1", tier: "md" },
+  { name: "Render", category: "Hosting", selfScore: 8, marketWeight: 5, Icon: SiRender, color: "#46E3B7", tier: "sm" },
+  { name: "Node.js", category: "Backend", selfScore: 10, marketWeight: 10, Icon: SiNodedotjs, color: "#339933", tier: "lg" },
+  { name: "Cursor", category: "AI Tool", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "#FFFFFF", tier: "sm" },
+  { name: "Zustand", category: "State", selfScore: 8, marketWeight: 6, Icon: Layers, color: "#FBBF24", tier: "sm" },
+  { name: "Prisma", category: "ORM", selfScore: 8, marketWeight: 8, Icon: SiPrisma, color: "#FFFFFF", tier: "md" },
+  { name: "Socket.io", category: "Realtime", selfScore: 8, marketWeight: 6, Icon: SiSocketdotio, color: "#FFFFFF", tier: "sm" },
+  { name: "Supabase", category: "Database", selfScore: 8, marketWeight: 7, Icon: SiSupabase, color: "#3ECF8E", tier: "sm" },
+  { name: "Docker", category: "DevOps", selfScore: 6, marketWeight: 9, Icon: SiDocker, color: "#2496ED", tier: "md" },
+  { name: "Axios", category: "HTTP", selfScore: 8, marketWeight: 7, Icon: SiAxios, color: "#5A29E4", tier: "sm" },
+  { name: "Antigravity", category: "AI Tool", selfScore: 8, marketWeight: 4, Icon: Sparkles, color: "#A78BFA", tier: "sm" },
+  { name: "REST API", category: "Architecture", selfScore: 8, marketWeight: 9, Icon: Globe2, color: "#A78BFA", tier: "md" },
+  { name: "Swagger", category: "API Docs", selfScore: 8, marketWeight: 6, Icon: SiSwagger, color: "#85EA2D", tier: "sm" },
+  { name: "Stitch", category: "Design", selfScore: 10, marketWeight: 4, Icon: Scissors, color: "#FFFFFF", tier: "sm" },
+  { name: "Postman", category: "Tooling", selfScore: 8, marketWeight: 7, Icon: SiPostman, color: "#FF6C37", tier: "md" },
+  { name: "Gemini CLI", category: "AI Tool", selfScore: 10, marketWeight: 6, Icon: Sparkles, color: "#4285F4", tier: "sm" },
+  { name: "Claude CLI", category: "AI Tool", selfScore: 10, marketWeight: 8, Icon: Bot, color: "#D97757", tier: "sm" },
+  { name: "Git & GitHub", category: "DevOps", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "#FFFFFF", tier: "md" },
+  { name: "Figma", category: "Design", selfScore: 10, marketWeight: 9, Icon: SiFigma, color: "#F24E1E", tier: "md" },
+];
+
+const SPAN: Record<Tier, string> = {
+  lg: "col-span-2 row-span-2",
+  md: "col-span-2 row-span-1",
+  sm: "col-span-1 row-span-1",
+};
+
+const CARD_BASE =
+  "group relative overflow-hidden rounded-2xl border border-zinc-800/60 bg-[#101010] p-4 " +
+  "transition-all duration-300 hover:border-zinc-700 hover:bg-[#151515] " +
+  "hover:shadow-[0_0_40px_-12px_var(--accent)]";
+
+function SkillCard({ skill }: { skill: Skill }) {
+  const { name, category, Icon, color, tier } = skill;
+  const isLg = tier === "lg";
+  const isSm = tier === "sm";
+  const iconSize = isLg ? 38 : isSm ? 22 : 28;
+
   return (
-    <div className="w-full h-full flex flex-col justify-center px-10 md:px-20 lg:px-32 text-white">
-      <div className="mb-12">
-        <h2 className="text-[10px] md:text-xs font-semibold tracking-[0.2em] text-orange-500 uppercase mb-4 border border-orange-500/30 inline-block px-4 py-1.5 rounded-full">
-          02 SKILLS
-        </h2>
-        <h3 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.1] uppercase">
-          Technologies I Work <br /> With
-        </h3>
-        <p className="mt-6 text-zinc-400 max-w-xl text-lg">
-          Across the stack, from interactive frontends to scalable backend services, databases, and cloud infrastructure.
+    <div
+      className={`${CARD_BASE} ${SPAN[tier]} flex flex-col justify-between`}
+      style={{ "--accent": color } as CSSProperties}
+    >
+      <Icon
+        size={iconSize}
+        className="relative z-10 text-zinc-400 transition-colors duration-300 group-hover:text-(--accent)"
+      />
+
+      <div className="relative z-10 mt-auto">
+        <h4 className={isLg ? "text-xl font-bold tracking-tight" : "text-sm font-bold tracking-tight"}>
+          {name}
+        </h4>
+        <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+          {category}
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 auto-rows-[130px] max-w-6xl w-full">
+      {isLg && (
+        <Icon
+          size={220}
+          className="pointer-events-none absolute -bottom-12 -right-12 text-zinc-700/15 transition-colors duration-300 group-hover:text-[color-mix(in_srgb,var(--accent)_15%,transparent)]"
+        />
+      )}
 
-        {/* React Block - Huge */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-2 row-span-2`}>
-          <SiReact className="text-3xl text-zinc-500 group-hover:text-[#61DAFB] transition-colors z-10" />
-          <div className="z-10 mt-auto">
-            <h4 className="text-xl font-bold">React.js</h4>
-            <p className="text-[10px] text-zinc-500 tracking-widest font-semibold mt-1 uppercase">Frontend</p>
-          </div>
-          <SiReact className="absolute -bottom-16 -right-16 text-[200px] text-zinc-800/20 group-hover:text-[#61DAFB]/10 transition-colors pointer-events-none" />
-        </div>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(circle at 30% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%)",
+        }}
+      />
+    </div>
+  );
+}
 
-        {/* Javascript */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-1 row-span-1`}>
-          <SiJavascript className="text-2xl text-zinc-500 group-hover:text-[#F7DF1E] transition-colors z-10" />
-          <div className="z-10 mt-auto">
-            <h4 className="text-sm font-bold">JavaScript</h4>
-            <p className="text-[9px] text-zinc-500 tracking-widest font-semibold mt-1 uppercase">Language</p>
-          </div>
-        </div>
+const MARQUEE_TOP = [
+  "JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express",
+  "Tailwind", "PostgreSQL", "MongoDB", "Docker", "REST API", "Figma",
+];
+const MARQUEE_BOTTOM = [
+  "Vue", "Angular", "Nest.js", "Prisma", "Supabase", "Firebase",
+  "Vercel", "Render", "Axios", "Swagger", "Postman", "Git",
+  "Cursor", "Claude", "Gemini",
+];
 
-        {/* Typescript */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-1 row-span-1`}>
-          <SiTypescript className="text-2xl text-zinc-500 group-hover:text-[#3178C6] transition-colors z-10" />
-          <div className="z-10 mt-auto">
-            <h4 className="text-sm font-bold">TypeScript</h4>
-            <p className="text-[9px] text-zinc-500 tracking-widest font-semibold mt-1 uppercase">Language</p>
-          </div>
-        </div>
-
-        {/* Next.js - Large */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-2 row-span-2`}>
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center z-10 group-hover:scale-110 transition-transform">
-            <SiNextdotjs className="text-2xl text-black" />
-          </div>
-          <div className="z-10 mt-auto">
-            <h4 className="text-xl font-bold">Next.js</h4>
-            <p className="text-[10px] text-zinc-500 tracking-widest font-semibold mt-1 uppercase">Frontend / Fullstack</p>
-          </div>
-          <SiNextdotjs className="absolute -bottom-10 -right-10 text-[180px] text-zinc-800/20 group-hover:text-white/10 transition-colors pointer-events-none" />
-        </div>
-
-        {/* Node.js */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-1 row-span-1`}>
-          <SiNodedotjs className="text-2xl text-zinc-500 group-hover:text-[#339933] transition-colors z-10" />
-          <div className="z-10 mt-auto">
-            <h4 className="text-sm font-bold">Node.js</h4>
-            <p className="text-[9px] text-zinc-500 tracking-widest font-semibold mt-1 uppercase">Backend</p>
-          </div>
-        </div>
-
-        {/* TailwindCSS */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-1 row-span-1`}>
-          <SiTailwindcss className="text-2xl text-zinc-500 group-hover:text-[#06B6D4] transition-colors z-10" />
-          <div className="z-10 mt-auto">
-            <h4 className="text-sm font-bold">Tailwind CSS</h4>
-            <p className="text-[9px] text-zinc-500 tracking-widest font-semibold mt-1 uppercase">Frontend</p>
-          </div>
-        </div>
-
-        {/* Databases Block */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-2 row-span-1 flex-row items-center gap-6`}>
-          <Database className="text-3xl text-zinc-500 group-hover:text-blue-400 transition-colors z-10" />
-          <div className="z-10">
-            <h4 className="text-sm font-bold">Databases</h4>
-            <div className="flex gap-3 mt-2 text-zinc-500">
-              <SiMysql className="hover:text-[#4479A1] cursor-pointer transition-colors text-lg" title="MySQL" />
-              <SiPostgresql className="hover:text-[#4169E1] cursor-pointer transition-colors text-lg" title="PostgreSQL" />
-              <SiSupabase className="hover:text-[#3ECF8E] cursor-pointer transition-colors text-lg" title="Supabase" />
-              <SiPrisma className="hover:text-white cursor-pointer transition-colors text-lg" title="Prisma ORM" />
-            </div>
-          </div>
-        </div>
-
-        {/* APIs & DevOps Block */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-2 row-span-1 flex-row items-center gap-6`}>
-          <Globe className="text-3xl text-zinc-500 group-hover:text-purple-400 transition-colors z-10" />
-          <div className="z-10">
-            <h4 className="text-sm font-bold">DevOps & APIs</h4>
-            <div className="flex gap-3 mt-2 text-zinc-500">
-              <SiDocker className="hover:text-[#2496ED] cursor-pointer transition-colors text-lg" title="Docker" />
-              <SiVercel className="hover:text-white cursor-pointer transition-colors text-lg" title="Vercel" />
-              <SiGit className="hover:text-[#F05032] cursor-pointer transition-colors text-lg" title="Git" />
-            </div>
-          </div>
-        </div>
-
-        {/* AI Tools & Dev Block */}
-        <div className={`${BENTO_ITEM_CLASSES} col-span-2 row-span-1 flex-row items-center gap-6`}>
-          <Bot className="text-3xl text-zinc-500 group-hover:text-green-400 transition-colors z-10" />
-          <div className="z-10">
-            <h4 className="text-sm font-bold">AI & Dev Tools</h4>
-            <p className="text-[10px] text-zinc-400 mt-1">Cursor, Gemini, Claude, Figma</p>
-          </div>
-        </div>
-
+// Reuses `animate-marquee` (defined as @theme token in app/globals.css → keyframe 0% → -50%).
+// Content is duplicated 2× so the -50% endpoint loops seamlessly.
+// `reverse` flips animation-direction for the L→R layer.
+function MarqueeRow({
+  items,
+  reverse = false,
+  durationSec,
+}: {
+  items: string[];
+  reverse?: boolean;
+  durationSec: number;
+}) {
+  return (
+    <div className="overflow-hidden">
+      <div
+        className="flex w-max animate-marquee items-center gap-6 pr-6 text-[10px] font-semibold uppercase tracking-[0.3em] text-zinc-700"
+        style={{
+          animationDuration: `${durationSec}s`,
+          animationDirection: reverse ? "reverse" : "normal",
+        }}
+      >
+        {[...items, ...items].map((name, i) => (
+          <span key={i} className="flex items-center gap-6 whitespace-nowrap">
+            {name}
+            <span className="text-orange-500/30">●</span>
+          </span>
+        ))}
       </div>
     </div>
+  );
+}
+
+type Props = {
+  /** Counter-translate value (vw) so the header stays pinned at viewport's left despite section translation. */
+  headerX?: MotionValue<string>;
+  /** Fade-in/out tied to the SKILLS scroll range. */
+  headerOpacity?: MotionValue<number>;
+};
+
+export function TechStack({ headerX, headerOpacity }: Props) {
+  return (
+    <section className="relative h-full w-full text-white">
+      {/* Pinned header — absolute + counter-translated by parent's scroll progress.
+          Sits at the top; horizontal counter-translate keeps it at viewport's left
+          while the bento underneath scrolls past. */}
+      <motion.header
+        className="pointer-events-none absolute left-12 top-16 z-20"
+        style={{ x: headerX, opacity: headerOpacity }}
+      >
+        <span className="mb-4 inline-block rounded-full border border-orange-500/30 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-orange-500 md:text-xs">
+          02 SKILLS
+        </span>
+        <h3 className="max-w-4xl text-4xl font-bold uppercase leading-[1.05] tracking-tighter text-white md:text-6xl">
+          Technologies I Work With
+        </h3>
+        <p className="mt-4 max-w-xl text-base text-zinc-400 md:text-lg">
+          Across the stack — interactive frontends, scalable backend services, databases, and cloud infrastructure.
+        </p>
+      </motion.header>
+
+      {/* Bento — pt clears the header band; fixed 110px row track keeps cards square */}
+      <div className="h-full pt-67 pb-20 pl-12 pr-12">
+        <div className="grid auto-cols-[110px] grid-flow-col-dense grid-rows-[repeat(4,110px)] gap-3">
+          {SKILLS.map((s) => (
+            <SkillCard key={s.name} skill={s} />
+          ))}
+        </div>
+      </div>
+
+      {/* Subtle bottom marquee — luxury background decoration, not a focal point */}
+      <div className="absolute bottom-0 left-0 z-10 flex w-full flex-col gap-1 border-t border-zinc-900/60 bg-black/40 py-3">
+        <MarqueeRow items={MARQUEE_TOP} reverse durationSec={50} />
+        <MarqueeRow items={MARQUEE_BOTTOM} durationSec={60} />
+      </div>
+    </section>
   );
 }

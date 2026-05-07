@@ -49,7 +49,19 @@ export default function Home() {
 
   const gOutlineX = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const gOutlineY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
-  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-50%"]);
+  // Row is hero(100vw) + tech(200vw) = 300vw. To slide the tech section's
+  // right edge to the viewport's right edge: -200vw / 300vw = -66.67%.
+  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-66.67%"]);
+
+  // Counter-translation for the TechStack header so it stays pinned at the
+  // viewport's left edge while the section scrolls past. CSS `sticky` cannot
+  // do this because the horizontal motion is a transform, not a scroll.
+  // Math: header lives at section's left-8 (~8px). Section starts at row's
+  // 100vw. Header world-x = row_translate + 100vw + 8. To hold world-x ≈ 8:
+  //   counter_x = -100vw - row_translate
+  // Row translate sweeps 0 → -200vw, so counter sweeps -100vw → +100vw.
+  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-100vw", "100vw"]);
+  const techHeaderOpacity = useTransform(scrollYProgress, [0.6, 0.675, 0.98, 1], [0, 1, 1, 0]);
 
   // Section navigation
   const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS"] as const;
@@ -68,7 +80,7 @@ export default function Home() {
     let targetProgress = 0;
     if (section === "HOME") targetProgress = 0;
     else if (section === "ABOUT") targetProgress = 0.35;
-    else if (section === "SKILLS") targetProgress = 0.95;
+    else if (section === "SKILLS") targetProgress = 0.675;
     window.scrollTo({ top: container.offsetTop + totalScroll * targetProgress, behavior: "smooth" });
   }, []);
 
@@ -87,7 +99,7 @@ export default function Home() {
           className="absolute z-0 bottom-20 text-[60vw] md:text-[50rem] font-medium leading-none tracking-tighter flex items-center justify-center pointer-events-none"
         >
           <motion.span
-            className="text-transparent bg-clip-text bg-gradient-to-b from-zinc-600/30 via-zinc-800/10 to-transparent opacity-50"
+            className="text-transparent bg-clip-text bg-linear-to-b from-zinc-600/30 via-zinc-800/10 to-transparent opacity-50"
             style={{
               x: parallaxX,
               y: parallaxY,
@@ -110,7 +122,7 @@ export default function Home() {
           className="absolute z-30 bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
           <span className="text-zinc-500 text-[10px] tracking-[0.3em] font-semibold">SCROLL</span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-zinc-500 to-transparent animate-pulse"></div>
+          <div className="w-px h-12 bg-linear-to-b from-zinc-500 to-transparent animate-pulse"></div>
         </motion.div>
 
 
@@ -161,9 +173,9 @@ export default function Home() {
         </div>
 
         {/* Fixed Top Navigation */}
-        <nav className="absolute top-0 w-full p-6 md:p-10 flex justify-between items-start z-50">
+        <nav className="absolute top-0 w-full p-6 md:p-10 flex justify-end items-start z-50">
           {/* Left Social Links */}
-          <div className="flex gap-4 md:gap-6 text-[10px] md:text-xs font-semibold tracking-widest text-zinc-400 mt-2">
+          {/* <div className="flex gap-4 md:gap-6 text-[10px] md:text-xs font-semibold tracking-widest text-zinc-400 mt-2">
             <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
               <FaFacebookF className="text-[12px] md:text-[14px]" /> FB
             </span>
@@ -175,13 +187,13 @@ export default function Home() {
             <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
               <FaLinkedinIn className="text-[12px] md:text-[14px]" /> LI
             </span>
-          </div>
+          </div> */}
 
           {/* Center Logo */}
-          <div className="text-3xl md:text-4xl font-medium relative mr-25 md:ml-0">
+          {/* <div className="text-3xl md:text-4xl font-medium relative mr-25 md:ml-0">
             arty
             <span className="absolute top-[60%] left-[12px] w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
-          </div>
+          </div> */}
 
           {/* Right Section Navigation */}
           <div className="flex items-center gap-6 md:gap-8 mt-2">
@@ -208,10 +220,10 @@ export default function Home() {
         {/* Horizontal Sliding Wrapper */}
         <motion.div
           style={{ x: horizontalX }}
-          className="absolute inset-0 z-20 w-[200vw] h-full flex"
+          className="absolute inset-0 z-20 w-[300vw] h-full flex"
         >
           {/* SECTION 1: Main Banner (100vw) */}
-          <div className="w-screen h-full flex-shrink-0 relative">
+          <div className="w-screen h-full shrink-0 relative">
             <motion.div
               style={{
                 opacity: contentOpacity,
@@ -223,7 +235,7 @@ export default function Home() {
               <div className="w-full h-full relative pointer-events-auto">
 
                 {/* Circular Text Top-Left */}
-                <div className="absolute top-28 left-8 md:left-12 w-24 h-24 md:w-32 md:h-32 rounded-full border border-zinc-800/50 flex items-center justify-center hidden sm:flex">
+                <div className="absolute top-28 left-8 md:left-12 w-24 h-24 md:w-32 md:h-32 rounded-full border border-zinc-800/50 items-center justify-center hidden sm:flex">
                   <div className="absolute w-full h-full animate-[spin_10s_linear_infinite]">
                     <svg viewBox="0 0 100 100" className="w-full h-full text-zinc-500 opacity-70">
                       <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
@@ -287,9 +299,9 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* SECTION 2: Tech Stack (100vw) */}
-          <div className="w-screen h-full flex-shrink-0 relative">
-            <TechStack />
+          {/* SECTION 2: Tech Stack (200vw) — wide canvas for horizontal-flowing bento */}
+          <div className="w-[200vw] h-full shrink-0 relative">
+            <TechStack headerX={techHeaderX} headerOpacity={techHeaderOpacity} />
           </div>
         </motion.div>
 
