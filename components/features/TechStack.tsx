@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { 
-  SiJavascript, SiTypescript, SiPython, 
-  SiNodedotjs, SiExpress, SiReact, SiNextdotjs, SiTailwindcss, SiSocketdotio, 
-  SiMysql, SiPrisma, SiPostgresql, SiSupabase, 
+import {
+  SiJavascript, SiTypescript, SiPython,
+  SiNodedotjs, SiExpress, SiReact, SiNextdotjs, SiTailwindcss, SiSocketdotio,
+  SiMysql, SiPrisma, SiPostgresql, SiSupabase,
   SiDocker, SiVercel, SiGit, SiFigma, SiNestjs, SiVuedotjs
 } from "react-icons/si";
 import { Search, Bot, Wrench, Database, Globe } from "lucide-react";
@@ -25,7 +25,7 @@ export function TechStack() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 auto-rows-[130px] max-w-6xl w-full">
-        
+
         {/* React Block - Huge */}
         <div className={`${BENTO_ITEM_CLASSES} col-span-2 row-span-2`}>
           <SiReact className="text-3xl text-zinc-500 group-hover:text-[#61DAFB] transition-colors z-10" />

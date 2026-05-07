@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { Search, Menu, Play } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionValueEvent } from "framer-motion";
+import { Play } from "lucide-react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import TypeIt from "typeit-react";
 import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { TechStack } from "@/components/features/TechStack";
@@ -44,12 +44,33 @@ export default function Home() {
   const loaderOpacity = useTransform(scrollYProgress, [0, 0.05, 1], [1, 0, 0]);
   const loaderScale = useTransform(scrollYProgress, [0, 0.2, 0.5], [1, 0.5, 0]);
 
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.3, 1], [0, 0.5, 1]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.2, 0.5, 1], [0, 1, 1, 0]);
   const contentY = useTransform(scrollYProgress, [0.2, 0.5, 1], [30, 0, 0]);
 
   const gOutlineX = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const gOutlineY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
   const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-50%"]);
+
+  // Section navigation
+  const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS"] as const;
+  const [activeSection, setActiveSection] = useState<string>("HOME");
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (v < 0.05) setActiveSection("HOME");
+    else if (v < 0.50) setActiveSection("ABOUT");
+    else setActiveSection("SKILLS");
+  });
+
+  const scrollToSection = useCallback((section: string) => {
+    const container = containerRef.current as HTMLElement | null;
+    if (!container) return;
+    const totalScroll = container.scrollHeight - window.innerHeight;
+    let targetProgress = 0;
+    if (section === "HOME") targetProgress = 0;
+    else if (section === "ABOUT") targetProgress = 0.35;
+    else if (section === "SKILLS") targetProgress = 0.95;
+    window.scrollTo({ top: container.offsetTop + totalScroll * targetProgress, behavior: "smooth" });
+  }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-[400vh] bg-[#030303] text-white ">
@@ -94,12 +115,11 @@ export default function Home() {
 
 
         {/* LOADING SCREEN (Only the first letter 'g') */}
-        <div className="relative z-30 w-full h-full animate-fade-up-20 ">
+        <div className="relative z-30 w-full h-full animate-fade-up-20 pointer-events-none">
           <motion.div
             style={{
               opacity: loaderOpacity,
               scale: loaderScale,
-              pointerEvents: useTransform(scrollYProgress, v => v > 0.3 ? 'none' : 'none')
             }}
             className="flex flex-col ml-20 pb-15 justify-center w-full h-full"
           >
@@ -140,6 +160,51 @@ export default function Home() {
           </motion.div>
         </div>
 
+        {/* Fixed Top Navigation */}
+        <nav className="absolute top-0 w-full p-6 md:p-10 flex justify-between items-start z-50">
+          {/* Left Social Links */}
+          <div className="flex gap-4 md:gap-6 text-[10px] md:text-xs font-semibold tracking-widest text-zinc-400 mt-2">
+            <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+              <FaFacebookF className="text-[12px] md:text-[14px]" /> FB
+            </span>
+            <span className="text-orange-500 flex items-center">•</span>
+            <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+              <FaGithub className="text-[12px] md:text-[14px]" /> GH
+            </span>
+            <span className="text-orange-500 flex items-center">•</span>
+            <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+              <FaLinkedinIn className="text-[12px] md:text-[14px]" /> LI
+            </span>
+          </div>
+
+          {/* Center Logo */}
+          <div className="text-3xl md:text-4xl font-medium relative mr-25 md:ml-0">
+            arty
+            <span className="absolute top-[60%] left-[12px] w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+          </div>
+
+          {/* Right Section Navigation */}
+          <div className="flex items-center gap-6 md:gap-8 mt-2">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item}
+                onClick={() => scrollToSection(item)}
+                className={`relative text-[10px] md:text-xs font-semibold tracking-widest uppercase transition-colors cursor-pointer ${activeSection === item ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+                  }`}
+              >
+                {item}
+                {activeSection === item && (
+                  <motion.span
+                    layoutId="navDot"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </nav>
+
         {/* Horizontal Sliding Wrapper */}
         <motion.div
           style={{ x: horizontalX }}
@@ -156,39 +221,6 @@ export default function Home() {
               className="w-full h-full"
             >
               <div className="w-full h-full relative pointer-events-auto">
-
-                {/* Top Navigation */}
-                <nav className="absolute top-0 w-full p-6 md:p-10 flex justify-between items-start z-50">
-                  {/* Left Social Links */}
-                  <div className="flex gap-4 md:gap-6 text-[10px] md:text-xs font-semibold tracking-widest text-zinc-400 mt-2">
-                    <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
-                      <FaFacebookF className="text-[12px] md:text-[14px]" /> FB
-                    </span>
-                    <span className="text-orange-500 flex items-center">•</span>
-                    <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
-                      <FaGithub className="text-[12px] md:text-[14px]" /> GH
-                    </span>
-                    <span className="text-orange-500 flex items-center">•</span>
-                    <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
-                      <FaLinkedinIn className="text-[12px] md:text-[14px]" /> LI
-                    </span>
-                  </div>
-
-                  {/* Center Logo */}
-                  <div className="text-3xl md:text-4xl font-medium relative mr-25 md:ml-0">
-                    arty
-                    <span className="absolute top-[60%] left-[12px] w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
-                  </div>
-
-                  {/* Right Menu */}
-                  <div className="flex items-center gap-6 md:gap-12 mt-1">
-                    <Search size={20} className="cursor-pointer text-zinc-400 hover:text-white transition-colors hidden md:block" />
-                    <div className="flex items-center gap-3 cursor-pointer group">
-                      <span className="text-[10px] md:text-xs font-semibold tracking-widest text-zinc-400 group-hover:text-white transition-colors uppercase">Menu</span>
-                      <Menu size={24} className="text-white" />
-                    </div>
-                  </div>
-                </nav>
 
                 {/* Circular Text Top-Left */}
                 <div className="absolute top-28 left-8 md:left-12 w-24 h-24 md:w-32 md:h-32 rounded-full border border-zinc-800/50 flex items-center justify-center hidden sm:flex">
@@ -256,7 +288,7 @@ export default function Home() {
           </div>
 
           {/* SECTION 2: Tech Stack (100vw) */}
-          <div className="w-screen h-full flex-shrink-0 relative bg-[#030303]">
+          <div className="w-screen h-full flex-shrink-0 relative">
             <TechStack />
           </div>
         </motion.div>
