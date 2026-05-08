@@ -6,6 +6,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import TypeIt from "typeit-react";
 import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { TechStack } from "@/components/features/TechStack";
+import { Projects } from "@/components/features/Projects";
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -49,38 +50,49 @@ export default function Home() {
 
   const gOutlineX = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const gOutlineY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
-  // Row is hero(100vw) + spacer(30vw) + tech(220vw) = 350vw. To slide the tech
-  // section's right edge to the viewport's right edge: -250vw / 350vw = -71.43%.
-  // The 30vw spacer gives the user scroll-room to fade Skills in before it
-  // fully enters the viewport.
-  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-71.43%"]);
+  // Row layout: hero(100) + spacer(30) + tech(220) + spacer(30) + projects(300) = 680vw.
+  // Total horizontal shift to land the projects' right edge at the viewport's right
+  // edge: -(680-100)/680 = -85.294%.
+  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-85.294%"]);
 
-  // Counter-translation for the TechStack header so it stays pinned at the
-  // viewport's left edge while the section scrolls past. CSS `sticky` cannot
-  // do this because the horizontal motion is a transform, not a scroll.
-  // Counter range = [-(100+spacer)vw, (W-100)vw]. With spacer=30 and W=220:
-  // sweeps -130vw → +120vw, exactly cancelling the row's 0 → -250vw shift.
-  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-130vw", "120vw"]);
+  // Counter-translate keeps each section's header pinned at viewport-left while
+  // the row scrolls past. Formula: counter_vw = -section_offset - horizontalX_vw.
+  // horizontalX_vw sweeps 0 → -580vw across [0.35, 1].
+  //   Tech offset = 130vw    → counter sweeps  -130 → +450
+  //   Projects offset = 380vw → counter sweeps  -380 → +200
+  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-130vw", "450vw"]);
+  const projHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-380vw", "200vw"]);
 
-  // Section enters viewport at scroll ~0.43 (when row_translate hits -30vw).
-  // Opacity ramp is rebased to start fading in slightly before that point.
+  // Visibility milestones (derived from horizontalX progression):
+  //   p≈0.38 — tech enters from right
+  //   p≈0.60 — tech fully in view
+  //   p≈0.66 — projects enters from right
+  //   p≈0.78 — projects fully in view
+  // Tech fades out as projects starts coming in.
   const techHeaderOpacity = useTransform(
     scrollYProgress,
-    [0.40, 0.50, 0.58, 0.97, 1],
+    [0.40, 0.50, 0.58, 0.66, 0.72],
     [0, 0.8, 1, 1, 0],
   );
+  const projHeaderOpacity = useTransform(
+    scrollYProgress,
+    [0.68, 0.74, 0.80, 0.97, 1],
+    [0, 0.5, 1, 1, 0],
+  );
 
-  // Fade-up entrance: section slides 24px → 0 while opacity ramps in.
+  // Fade-up entrance per section.
   const techY = useTransform(scrollYProgress, [0.40, 0.55], ["24px", "0px"]);
+  const projY = useTransform(scrollYProgress, [0.68, 0.78], ["24px", "0px"]);
 
   // Section navigation
-  const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS"] as const;
+  const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS", "PROJECTS"] as const;
   const [activeSection, setActiveSection] = useState<string>("HOME");
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     if (v < 0.05) setActiveSection("HOME");
-    else if (v < 0.50) setActiveSection("ABOUT");
-    else setActiveSection("SKILLS");
+    else if (v < 0.40) setActiveSection("ABOUT");
+    else if (v < 0.66) setActiveSection("SKILLS");
+    else setActiveSection("PROJECTS");
   });
 
   const scrollToSection = useCallback((section: string) => {
@@ -90,7 +102,8 @@ export default function Home() {
     let targetProgress = 0;
     if (section === "HOME") targetProgress = 0;
     else if (section === "ABOUT") targetProgress = 0.3;
-    else if (section === "SKILLS") targetProgress = 0.675;
+    else if (section === "SKILLS") targetProgress = 0.55;
+    else if (section === "PROJECTS") targetProgress = 0.82;
     window.scrollTo({ top: container.offsetTop + totalScroll * targetProgress, behavior: "smooth" });
   }, []);
 
@@ -230,7 +243,7 @@ export default function Home() {
         {/* Horizontal Sliding Wrapper */}
         <motion.div
           style={{ x: horizontalX }}
-          className="absolute inset-0 z-20 w-[350vw] h-full flex"
+          className="absolute inset-0 z-20 w-[680vw] h-full flex"
         >
           {/* SECTION 1: Main Banner (100vw) */}
           <div className="w-screen h-full shrink-0 relative">
@@ -318,6 +331,17 @@ export default function Home() {
             style={{ y: techY }}
           >
             <TechStack headerX={techHeaderX} headerOpacity={techHeaderOpacity} />
+          </motion.div>
+
+          {/* TRANSITION SPACER (30vw) — scroll room for the Projects fade-up entrance */}
+          <div aria-hidden className="w-[30vw] h-full shrink-0" />
+
+          {/* SECTION 3: Projects (300vw) — 3 viewport-wide project slides */}
+          <motion.div
+            className="w-[300vw] h-full shrink-0 relative"
+            style={{ y: projY }}
+          >
+            <Projects headerX={projHeaderX} headerOpacity={projHeaderOpacity} />
           </motion.div>
         </motion.div>
 
