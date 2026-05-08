@@ -44,24 +44,34 @@ export default function Home() {
   const loaderOpacity = useTransform(scrollYProgress, [0, 0.05, 1], [1, 0, 0]);
   const loaderScale = useTransform(scrollYProgress, [0, 0.2, 0.5], [1, 0.5, 0]);
 
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.2, 0.5, 1], [0, 1, 1, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.2, 0.3, 0.4], [0, 1, 1, 0]);
   const contentY = useTransform(scrollYProgress, [0.2, 0.5, 1], [30, 0, 0]);
 
   const gOutlineX = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const gOutlineY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
-  // Row is hero(100vw) + tech(220vw) = 320vw. To slide the tech section's
-  // right edge to the viewport's right edge: -220vw / 320vw = -68.75%.
-  // Tech is 220vw to fit 5 category mini-grids + 4 gap-x-24 separators
-  // (~2738px content; fits 1280+ viewports).
-  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-68.75%"]);
+  // Row is hero(100vw) + spacer(30vw) + tech(220vw) = 350vw. To slide the tech
+  // section's right edge to the viewport's right edge: -250vw / 350vw = -71.43%.
+  // The 30vw spacer gives the user scroll-room to fade Skills in before it
+  // fully enters the viewport.
+  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-71.43%"]);
 
   // Counter-translation for the TechStack header so it stays pinned at the
   // viewport's left edge while the section scrolls past. CSS `sticky` cannot
   // do this because the horizontal motion is a transform, not a scroll.
-  // Counter range = [-100vw, (W-100)vw] where W is tech section width in vw.
-  // Row translate sweeps 0 → -220vw, so counter sweeps -100vw → +120vw.
-  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-100vw", "120vw"]);
-  const techHeaderOpacity = useTransform(scrollYProgress, [0.5, 0.6, 0.675, 0.98, 1], [0, 0.5, 1, 1, 0]);
+  // Counter range = [-(100+spacer)vw, (W-100)vw]. With spacer=30 and W=220:
+  // sweeps -130vw → +120vw, exactly cancelling the row's 0 → -250vw shift.
+  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-130vw", "120vw"]);
+
+  // Section enters viewport at scroll ~0.43 (when row_translate hits -30vw).
+  // Opacity ramp is rebased to start fading in slightly before that point.
+  const techHeaderOpacity = useTransform(
+    scrollYProgress,
+    [0.40, 0.50, 0.58, 0.97, 1],
+    [0, 0.8, 1, 1, 0],
+  );
+
+  // Fade-up entrance: section slides 24px → 0 while opacity ramps in.
+  const techY = useTransform(scrollYProgress, [0.40, 0.55], ["24px", "0px"]);
 
   // Section navigation
   const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS"] as const;
@@ -79,7 +89,7 @@ export default function Home() {
     const totalScroll = container.scrollHeight - window.innerHeight;
     let targetProgress = 0;
     if (section === "HOME") targetProgress = 0;
-    else if (section === "ABOUT") targetProgress = 0.35;
+    else if (section === "ABOUT") targetProgress = 0.3;
     else if (section === "SKILLS") targetProgress = 0.675;
     window.scrollTo({ top: container.offsetTop + totalScroll * targetProgress, behavior: "smooth" });
   }, []);
@@ -220,7 +230,7 @@ export default function Home() {
         {/* Horizontal Sliding Wrapper */}
         <motion.div
           style={{ x: horizontalX }}
-          className="absolute inset-0 z-20 w-[320vw] h-full flex"
+          className="absolute inset-0 z-20 w-[350vw] h-full flex"
         >
           {/* SECTION 1: Main Banner (100vw) */}
           <div className="w-screen h-full shrink-0 relative">
@@ -299,10 +309,16 @@ export default function Home() {
             </motion.div>
           </div>
 
+          {/* TRANSITION SPACER (30vw) — scroll room for the Skills fade-up entrance */}
+          <div aria-hidden className="w-[30vw] h-full shrink-0" />
+
           {/* SECTION 2: Tech Stack (220vw) — wide canvas for horizontal-flowing bento */}
-          <div className="w-[220vw] h-full shrink-0 relative">
+          <motion.div
+            className="w-[220vw] h-full shrink-0 relative"
+            style={{ y: techY }}
+          >
             <TechStack headerX={techHeaderX} headerOpacity={techHeaderOpacity} />
-          </div>
+          </motion.div>
         </motion.div>
 
       </div>
