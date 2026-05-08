@@ -197,20 +197,26 @@ export function TechStack({ headerX, headerOpacity }: Props) {
         </p>
       </motion.header>
 
-      {/* Bento — pt clears the header band; fixed 110px row track keeps cards square */}
-      <div className="h-full pt-67 pb-20 pl-12 pr-12">
+      {/* Bento — pt clears the header band; fades in/out alongside the header */}
+      <motion.div
+        className="h-full pt-67 pb-20 pl-12 pr-12"
+        style={{ opacity: headerOpacity }}
+      >
         <div className="grid auto-cols-[110px] grid-flow-col-dense grid-rows-[repeat(4,110px)] gap-3">
           {SKILLS.map((s) => (
             <SkillCard key={s.name} skill={s} />
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Subtle bottom marquee — luxury background decoration, not a focal point */}
-      <div className="absolute bottom-0 left-0 z-10 flex w-full flex-col gap-1 border-t border-zinc-900/60 bg-black/40 py-3">
+      {/* Subtle bottom marquee — same fade timing as the header */}
+      <motion.div
+        className="absolute bottom-0 left-0 z-10 flex w-full flex-col gap-1 border-t border-zinc-900/60 bg-black/40 py-3"
+        style={{ opacity: headerOpacity }}
+      >
         <MarqueeRow items={MARQUEE_TOP} reverse durationSec={50} />
         <MarqueeRow items={MARQUEE_BOTTOM} durationSec={60} />
-      </div>
+      </motion.div>
     </section>
   );
 }

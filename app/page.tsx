@@ -61,7 +61,7 @@ export default function Home() {
   //   counter_x = -100vw - row_translate
   // Row translate sweeps 0 → -200vw, so counter sweeps -100vw → +100vw.
   const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-100vw", "100vw"]);
-  const techHeaderOpacity = useTransform(scrollYProgress, [0.6, 0.675, 0.98, 1], [0, 1, 1, 0]);
+  const techHeaderOpacity = useTransform(scrollYProgress, [0.5, 0.6, 0.675, 0.98, 1], [0, 0.5, 1, 1, 0]);
 
   // Section navigation
   const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS"] as const;
