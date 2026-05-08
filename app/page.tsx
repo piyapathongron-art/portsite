@@ -1,15 +1,21 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionValueEvent, useInView } from "framer-motion";
 import { Play } from "lucide-react";
 import { useRef, useEffect, useState, useCallback } from "react";
 import TypeIt from "typeit-react";
 import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { TechStack } from "@/components/features/TechStack";
 import { Projects } from "@/components/features/Projects";
+import { Contact } from "@/components/features/Contact";
 
 export default function Home() {
   const containerRef = useRef(null);
+  // Contact lives OUTSIDE the sticky horizontal scroller. We detect when it
+  // enters the viewport so the top nav can highlight CONTACT after the user
+  // scrolls past the sticky 1000vh block.
+  const contactRef = useRef<HTMLDivElement | null>(null);
+  const contactInView = useInView(contactRef, { margin: "-40% 0px" });
 
   // Subtle Mouse Parallax Logic
   const mouseX = useMotionValue(0);
@@ -104,17 +110,29 @@ export default function Home() {
   const projY = useTransform(scrollYProgress, [0.55, 0.70], ["24px", "0px"]);
 
   // Section navigation
-  const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS", "PROJECTS"] as const;
+  const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS", "PROJECTS", "CONTACT"] as const;
   const [activeSection, setActiveSection] = useState<string>("HOME");
 
+  // Inside the sticky range, scrollYProgress drives the highlight. Once the
+  // user scrolls past the sticky container into Contact, useInView takes over.
   useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (contactInView) return;
     if (v < 0.05) setActiveSection("HOME");
     else if (v < 0.36) setActiveSection("ABOUT");
     else if (v < 0.55) setActiveSection("SKILLS");
     else setActiveSection("PROJECTS");
   });
 
+  useEffect(() => {
+    if (contactInView) setActiveSection("CONTACT");
+  }, [contactInView]);
+
   const scrollToSection = useCallback((section: string) => {
+    if (section === "CONTACT") {
+      const el = contactRef.current;
+      if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
+      return;
+    }
     const container = containerRef.current as HTMLElement | null;
     if (!container) return;
     const totalScroll = container.scrollHeight - window.innerHeight;
@@ -127,6 +145,7 @@ export default function Home() {
   }, []);
 
   return (
+    <>
     <div ref={containerRef} className="relative w-full h-[1000vh] bg-[#030303] text-white ">
       {/* Sticky container that keeps the view locked while we scroll */}
       <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center">
@@ -366,5 +385,12 @@ export default function Home() {
 
       </div>
     </div>
+
+    {/* CONTACT — lives OUTSIDE the sticky horizontal scroller so it scrolls
+        normally (vertically) once the user reaches the end of the sticky range. */}
+    <div ref={contactRef}>
+      <Contact />
+    </div>
+    </>
   );
 }
