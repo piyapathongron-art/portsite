@@ -27,49 +27,86 @@ type Skill = {
 
 // final = selfScore + marketWeight (out of 20)
 //   lg → flagship core stack
-//   md → final ≥ 15 with strong market signal (Docker @ 6/9 still earns md)
+//   md → final ≥ 15 with strong market signal
 //   sm → basics, secondary frameworks, niche tooling
 //
-// Order is intentionally interleaved so dense column packing scatters
-// large/medium/small cards organically instead of clumping by tier.
-const SKILLS: Skill[] = [
-  { name: "React.js", category: "Frontend", selfScore: 10, marketWeight: 10, Icon: SiReact, color: "#61DAFB", tier: "lg" },
-  { name: "HTML", category: "Language", selfScore: 10, marketWeight: 5, Icon: SiHtml5, color: "#E34F26", tier: "sm" },
-  { name: "CSS", category: "Language", selfScore: 10, marketWeight: 6, Icon: SiCss, color: "#1572B6", tier: "sm" },
-  { name: "JavaScript", category: "Language", selfScore: 10, marketWeight: 10, Icon: SiJavascript, color: "#F7DF1E", tier: "md" },
-  { name: "Vue.js", category: "Frontend", selfScore: 5, marketWeight: 6, Icon: SiVuedotjs, color: "#4FC08D", tier: "sm" },
-  { name: "Vercel", category: "Hosting", selfScore: 8, marketWeight: 7, Icon: SiVercel, color: "#FFFFFF", tier: "sm" },
-  { name: "TypeScript", category: "Language", selfScore: 8, marketWeight: 10, Icon: SiTypescript, color: "#3178C6", tier: "lg" },
-  { name: "Python", category: "Language", selfScore: 5, marketWeight: 7, Icon: SiPython, color: "#3776AB", tier: "sm" },
-  { name: "Express.js", category: "Backend", selfScore: 10, marketWeight: 8, Icon: SiExpress, color: "#FFFFFF", tier: "md" },
-  { name: "JWT", category: "Auth", selfScore: 8, marketWeight: 7, Icon: SiJsonwebtokens, color: "#D63AFF", tier: "sm" },
-  { name: "MongoDB", category: "Database", selfScore: 6, marketWeight: 8, Icon: SiMongodb, color: "#47A248", tier: "sm" },
-  { name: "Tailwind CSS", category: "Frontend", selfScore: 10, marketWeight: 9, Icon: SiTailwindcss, color: "#06B6D4", tier: "md" },
-  { name: "Next.js", category: "Fullstack", selfScore: 7, marketWeight: 10, Icon: SiNextdotjs, color: "#FFFFFF", tier: "lg" },
-  { name: "Bcrypt", category: "Auth", selfScore: 8, marketWeight: 5, Icon: Lock, color: "#A1A1AA", tier: "sm" },
-  { name: "Angular", category: "Frontend", selfScore: 5, marketWeight: 5, Icon: SiAngular, color: "#DD0031", tier: "sm" },
-  { name: "PostgreSQL", category: "Database", selfScore: 8, marketWeight: 9, Icon: SiPostgresql, color: "#4169E1", tier: "md" },
-  { name: "Firebase", category: "Database", selfScore: 6, marketWeight: 6, Icon: SiFirebase, color: "#FFCA28", tier: "sm" },
-  { name: "Nest.js", category: "Backend", selfScore: 5, marketWeight: 6, Icon: SiNestjs, color: "#E0234E", tier: "sm" },
-  { name: "MySQL", category: "Database", selfScore: 10, marketWeight: 7, Icon: SiMysql, color: "#4479A1", tier: "md" },
-  { name: "Render", category: "Hosting", selfScore: 8, marketWeight: 5, Icon: SiRender, color: "#46E3B7", tier: "sm" },
-  { name: "Node.js", category: "Backend", selfScore: 10, marketWeight: 10, Icon: SiNodedotjs, color: "#339933", tier: "lg" },
-  { name: "Cursor", category: "AI Tool", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "#FFFFFF", tier: "sm" },
-  { name: "Zustand", category: "State", selfScore: 8, marketWeight: 6, Icon: Layers, color: "#FBBF24", tier: "sm" },
-  { name: "Prisma", category: "ORM", selfScore: 8, marketWeight: 8, Icon: SiPrisma, color: "#FFFFFF", tier: "md" },
-  { name: "Socket.io", category: "Realtime", selfScore: 8, marketWeight: 6, Icon: SiSocketdotio, color: "#FFFFFF", tier: "sm" },
-  { name: "Supabase", category: "Database", selfScore: 8, marketWeight: 7, Icon: SiSupabase, color: "#3ECF8E", tier: "sm" },
-  { name: "Docker", category: "DevOps", selfScore: 6, marketWeight: 9, Icon: SiDocker, color: "#2496ED", tier: "md" },
-  { name: "Axios", category: "HTTP", selfScore: 8, marketWeight: 7, Icon: SiAxios, color: "#5A29E4", tier: "sm" },
-  { name: "Antigravity", category: "AI Tool", selfScore: 8, marketWeight: 4, Icon: Sparkles, color: "#A78BFA", tier: "sm" },
-  { name: "REST API", category: "Architecture", selfScore: 8, marketWeight: 9, Icon: Globe2, color: "#A78BFA", tier: "md" },
-  { name: "Swagger", category: "API Docs", selfScore: 8, marketWeight: 6, Icon: SiSwagger, color: "#85EA2D", tier: "sm" },
-  { name: "Stitch", category: "Design", selfScore: 10, marketWeight: 4, Icon: Scissors, color: "#FFFFFF", tier: "sm" },
-  { name: "Postman", category: "Tooling", selfScore: 8, marketWeight: 7, Icon: SiPostman, color: "#FF6C37", tier: "md" },
-  { name: "Gemini CLI", category: "AI Tool", selfScore: 10, marketWeight: 6, Icon: Sparkles, color: "#4285F4", tier: "sm" },
-  { name: "Claude CLI", category: "AI Tool", selfScore: 10, marketWeight: 8, Icon: Bot, color: "#D97757", tier: "sm" },
-  { name: "Git & GitHub", category: "DevOps", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "#FFFFFF", tier: "md" },
-  { name: "Figma", category: "Design", selfScore: 10, marketWeight: 9, Icon: SiFigma, color: "#F24E1E", tier: "md" },
+// Skills are grouped into 5 categories rendered as separate mini-bento grids
+// in a horizontal flex row. Within each group, items are ordered so dense
+// column packing scatters lg/md/sm tiers organically rather than clumping.
+type SkillGroup = {
+  name: string;
+  rows: number;
+  skills: Skill[];
+};
+
+const GROUPS: SkillGroup[] = [
+  {
+    name: "Languages",
+    rows: 3,
+    skills: [
+      { name: "HTML",       category: "Language", selfScore: 10, marketWeight:  5, Icon: SiHtml5,      color: "#E34F26", tier: "sm" },
+      { name: "TypeScript", category: "Language", selfScore:  8, marketWeight: 10, Icon: SiTypescript, color: "#3178C6", tier: "lg" },
+      { name: "CSS",        category: "Language", selfScore: 10, marketWeight:  6, Icon: SiCss,        color: "#1572B6", tier: "sm" },
+      { name: "Python",     category: "Language", selfScore:  5, marketWeight:  7, Icon: SiPython,     color: "#3776AB", tier: "sm" },
+      { name: "JavaScript", category: "Language", selfScore: 10, marketWeight: 10, Icon: SiJavascript, color: "#F7DF1E", tier: "md" },
+    ],
+  },
+  {
+    name: "Frameworks",
+    rows: 4,
+    skills: [
+      { name: "React.js",     category: "Frontend",  selfScore: 10, marketWeight: 10, Icon: SiReact,         color: "#61DAFB", tier: "lg" },
+      { name: "Vue.js",       category: "Frontend",  selfScore:  5, marketWeight:  6, Icon: SiVuedotjs,      color: "#4FC08D", tier: "sm" },
+      { name: "Angular",      category: "Frontend",  selfScore:  5, marketWeight:  5, Icon: SiAngular,       color: "#DD0031", tier: "sm" },
+      { name: "Express.js",   category: "Backend",   selfScore: 10, marketWeight:  8, Icon: SiExpress,       color: "#FFFFFF", tier: "md" },
+      { name: "Next.js",      category: "Fullstack", selfScore:  7, marketWeight: 10, Icon: SiNextdotjs,     color: "#FFFFFF", tier: "lg" },
+      { name: "Nest.js",      category: "Backend",   selfScore:  5, marketWeight:  6, Icon: SiNestjs,        color: "#E0234E", tier: "sm" },
+      { name: "Tailwind CSS", category: "Frontend",  selfScore: 10, marketWeight:  9, Icon: SiTailwindcss,   color: "#06B6D4", tier: "md" },
+      { name: "Bcrypt",       category: "Auth",      selfScore:  8, marketWeight:  5, Icon: Lock,            color: "#A1A1AA", tier: "sm" },
+      { name: "Node.js",      category: "Backend",   selfScore: 10, marketWeight: 10, Icon: SiNodedotjs,     color: "#339933", tier: "lg" },
+      { name: "Zustand",      category: "State",     selfScore:  8, marketWeight:  6, Icon: Layers,          color: "#FBBF24", tier: "sm" },
+      { name: "Socket.io",    category: "Realtime",  selfScore:  8, marketWeight:  6, Icon: SiSocketdotio,   color: "#FFFFFF", tier: "sm" },
+      { name: "JWT",          category: "Auth",      selfScore:  8, marketWeight:  7, Icon: SiJsonwebtokens, color: "#D63AFF", tier: "sm" },
+    ],
+  },
+  {
+    name: "Database",
+    rows: 3,
+    skills: [
+      { name: "MySQL",      category: "Database", selfScore: 10, marketWeight: 7, Icon: SiMysql,      color: "#4479A1", tier: "md" },
+      { name: "Supabase",   category: "Database", selfScore:  8, marketWeight: 7, Icon: SiSupabase,   color: "#3ECF8E", tier: "sm" },
+      { name: "Firebase",   category: "Database", selfScore:  6, marketWeight: 6, Icon: SiFirebase,   color: "#FFCA28", tier: "sm" },
+      { name: "PostgreSQL", category: "Database", selfScore:  8, marketWeight: 9, Icon: SiPostgresql, color: "#4169E1", tier: "md" },
+      { name: "Prisma",     category: "ORM",      selfScore:  8, marketWeight: 8, Icon: SiPrisma,     color: "#FFFFFF", tier: "md" },
+      { name: "MongoDB",    category: "Database", selfScore:  6, marketWeight: 8, Icon: SiMongodb,    color: "#47A248", tier: "sm" },
+    ],
+  },
+  {
+    name: "DevOps",
+    rows: 3,
+    skills: [
+      { name: "Docker",   category: "DevOps",       selfScore: 6, marketWeight: 9, Icon: SiDocker,  color: "#2496ED", tier: "md" },
+      { name: "Vercel",   category: "Hosting",      selfScore: 8, marketWeight: 7, Icon: SiVercel,  color: "#FFFFFF", tier: "sm" },
+      { name: "Render",   category: "Hosting",      selfScore: 8, marketWeight: 5, Icon: SiRender,  color: "#46E3B7", tier: "sm" },
+      { name: "REST API", category: "Architecture", selfScore: 8, marketWeight: 9, Icon: Globe2,    color: "#A78BFA", tier: "md" },
+      { name: "Axios",    category: "HTTP",         selfScore: 8, marketWeight: 7, Icon: SiAxios,   color: "#5A29E4", tier: "sm" },
+      { name: "Postman",  category: "Tooling",      selfScore: 8, marketWeight: 7, Icon: SiPostman, color: "#FF6C37", tier: "md" },
+      { name: "Swagger",  category: "API Docs",     selfScore: 8, marketWeight: 6, Icon: SiSwagger, color: "#85EA2D", tier: "sm" },
+    ],
+  },
+  {
+    name: "Tools",
+    rows: 3,
+    skills: [
+      { name: "Git & GitHub", category: "DevOps",  selfScore: 10, marketWeight: 10, Icon: SiGithub,      color: "#FFFFFF", tier: "md" },
+      { name: "Cursor",       category: "AI Tool", selfScore:  8, marketWeight:  8, Icon: MousePointer2, color: "#FFFFFF", tier: "sm" },
+      { name: "Antigravity",  category: "AI Tool", selfScore:  8, marketWeight:  4, Icon: Sparkles,      color: "#A78BFA", tier: "sm" },
+      { name: "Figma",        category: "Design",  selfScore: 10, marketWeight:  9, Icon: SiFigma,       color: "#F24E1E", tier: "md" },
+      { name: "Gemini CLI",   category: "AI Tool", selfScore: 10, marketWeight:  6, Icon: Sparkles,      color: "#4285F4", tier: "sm" },
+      { name: "Claude CLI",   category: "AI Tool", selfScore: 10, marketWeight:  8, Icon: Bot,           color: "#D97757", tier: "sm" },
+      { name: "Stitch",       category: "Design",  selfScore: 10, marketWeight:  4, Icon: Scissors,      color: "#FFFFFF", tier: "sm" },
+    ],
+  },
 ];
 
 const SPAN: Record<Tier, string> = {
@@ -197,16 +234,26 @@ export function TechStack({ headerX, headerOpacity }: Props) {
         </p>
       </motion.header>
 
-      {/* Bento — pt clears the header band; fades in/out alongside the header */}
+      {/* Bento — pt clears the header band. One mini-grid per category;
+          gap-x-24 visually separates the clusters along the horizontal scroll. */}
       <motion.div
-        className="h-full pt-67 pb-20 pl-12 pr-12"
+        className="flex h-full items-center gap-x-24 pt-67 pb-20 pl-12 pr-12"
         style={{ opacity: headerOpacity }}
       >
-        <div className="grid auto-cols-[110px] grid-flow-col-dense grid-rows-[repeat(4,110px)] gap-3">
-          {SKILLS.map((s) => (
-            <SkillCard key={s.name} skill={s} />
-          ))}
-        </div>
+        {GROUPS.map((group) => (
+          <div
+            key={group.name}
+            className={`grid shrink-0 auto-cols-[110px] grid-flow-col-dense gap-3 ${
+              group.rows === 4
+                ? "grid-rows-[repeat(4,110px)]"
+                : "grid-rows-[repeat(3,110px)]"
+            }`}
+          >
+            {group.skills.map((s) => (
+              <SkillCard key={s.name} skill={s} />
+            ))}
+          </div>
+        ))}
       </motion.div>
 
       {/* Subtle bottom marquee — same fade timing as the header */}

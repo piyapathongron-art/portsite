@@ -49,18 +49,18 @@ export default function Home() {
 
   const gOutlineX = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const gOutlineY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
-  // Row is hero(100vw) + tech(200vw) = 300vw. To slide the tech section's
-  // right edge to the viewport's right edge: -200vw / 300vw = -66.67%.
-  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-66.67%"]);
+  // Row is hero(100vw) + tech(220vw) = 320vw. To slide the tech section's
+  // right edge to the viewport's right edge: -220vw / 320vw = -68.75%.
+  // Tech is 220vw to fit 5 category mini-grids + 4 gap-x-24 separators
+  // (~2738px content; fits 1280+ viewports).
+  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-68.75%"]);
 
   // Counter-translation for the TechStack header so it stays pinned at the
   // viewport's left edge while the section scrolls past. CSS `sticky` cannot
   // do this because the horizontal motion is a transform, not a scroll.
-  // Math: header lives at section's left-8 (~8px). Section starts at row's
-  // 100vw. Header world-x = row_translate + 100vw + 8. To hold world-x ≈ 8:
-  //   counter_x = -100vw - row_translate
-  // Row translate sweeps 0 → -200vw, so counter sweeps -100vw → +100vw.
-  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-100vw", "100vw"]);
+  // Counter range = [-100vw, (W-100)vw] where W is tech section width in vw.
+  // Row translate sweeps 0 → -220vw, so counter sweeps -100vw → +120vw.
+  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-100vw", "120vw"]);
   const techHeaderOpacity = useTransform(scrollYProgress, [0.5, 0.6, 0.675, 0.98, 1], [0, 0.5, 1, 1, 0]);
 
   // Section navigation
@@ -220,7 +220,7 @@ export default function Home() {
         {/* Horizontal Sliding Wrapper */}
         <motion.div
           style={{ x: horizontalX }}
-          className="absolute inset-0 z-20 w-[300vw] h-full flex"
+          className="absolute inset-0 z-20 w-[320vw] h-full flex"
         >
           {/* SECTION 1: Main Banner (100vw) */}
           <div className="w-screen h-full shrink-0 relative">
@@ -299,8 +299,8 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* SECTION 2: Tech Stack (200vw) — wide canvas for horizontal-flowing bento */}
-          <div className="w-[200vw] h-full shrink-0 relative">
+          {/* SECTION 2: Tech Stack (220vw) — wide canvas for horizontal-flowing bento */}
+          <div className="w-[220vw] h-full shrink-0 relative">
             <TechStack headerX={techHeaderX} headerOpacity={techHeaderOpacity} />
           </div>
         </motion.div>
