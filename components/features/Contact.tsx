@@ -3,6 +3,32 @@
 import { motion, useInView, type Variants } from "framer-motion";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
+import TypeIt from "typeit-react";
+
+/* VS Code Dark+ palette token helpers — return raw HTML so TypeIt can type
+   their text content character-by-character while applying the wrapping span
+   instantly (`html: true`). */
+const span = (color: string, s: string) =>
+  `<span style="color:${color}">${s}</span>`;
+const KW = (s: string) => span("#C586C0", s); // keyword (purple)
+const ID = (s: string) => span("#9CDCFE", s); // variable / property (light blue)
+const STR = (s: string) => span("#CE9178", s); // string (orange)
+const BOOL = (s: string) => span("#569CD6", s); // boolean keyword (blue)
+const FN = (s: string) => span("#DCDCAA", s); // function (yellow)
+const OP = (s: string) => span("#9CA3AF", s); // operator / punctuation (zinc-400)
+
+const CODE_LINES: string[] = [
+  `${KW("const")} ${ID("developer")} ${OP("=")} ${OP("{")}`,
+  `  ${ID("name")}${OP(":")} ${STR("&quot;Arty (Piyapat)&quot;")}${OP(",")}`,
+  `  ${ID("role")}${OP(":")} ${STR("&quot;Full-Stack Developer&quot;")}${OP(",")}`,
+  `  ${ID("stack")}${OP(":")} ${OP("[")}${STR("&quot;React&quot;")}${OP(",")} ${STR("&quot;Next.js&quot;")}${OP(",")} ${STR("&quot;Node.js&quot;")}${OP(",")} ${STR("&quot;Prisma&quot;")}${OP("]")}${OP(",")}`,
+  `  ${ID("passion")}${OP(":")} ${BOOL("true")}${OP(",")}`,
+  `${OP("};")}`,
+  ``, // blank line 7
+  `${KW("if")} ${OP("(")}${ID("you")}${OP(".")}${FN("haveAnIdea")}${OP("())")} ${OP("{")}`,
+  `  ${ID("developer")}${OP(".")}${FN("build")}${OP("(")}${ID("it")}${OP(")")}${OP(";")}`,
+  `${OP("}")}`,
+];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -98,7 +124,7 @@ export function Contact() {
           {/* soft accent glow behind the editor */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-orange-500/10 blur-3xl"
+            className="pointer-events-none absolute -inset-6 -z-10 rounded-4xl bg-orange-500/10 blur-3xl"
           />
 
           <div className="overflow-hidden rounded-xl border border-zinc-800 bg-[#0A0A0A] shadow-2xl shadow-black/60">
@@ -115,67 +141,37 @@ export function Contact() {
               </div>
             </div>
 
-            {/* code body — VS Code Dark+ palette */}
-            <pre className="overflow-x-auto p-5 font-mono text-[12px] leading-[1.75] md:p-6 md:text-[13px]">
-              <code className="text-zinc-300">
-                <CodeLine n={1}>
-                  <Kw>const</Kw> <Var>developer</Var> <Op>=</Op>{" "}
-                  <Op>{"{"}</Op>
-                </CodeLine>
-                <CodeLine n={2}>
-                  {"  "}
-                  <Prop>name</Prop>
-                  <Op>:</Op> <Str>&quot;Arty (Piyapat)&quot;</Str>
-                  <Op>,</Op>
-                </CodeLine>
-                <CodeLine n={3}>
-                  {"  "}
-                  <Prop>role</Prop>
-                  <Op>:</Op> <Str>&quot;Full-Stack Developer&quot;</Str>
-                  <Op>,</Op>
-                </CodeLine>
-                <CodeLine n={4}>
-                  {"  "}
-                  <Prop>stack</Prop>
-                  <Op>:</Op> <Op>[</Op>
-                  <Str>&quot;React&quot;</Str>
-                  <Op>,</Op> <Str>&quot;Next.js&quot;</Str>
-                  <Op>,</Op> <Str>&quot;Node.js&quot;</Str>
-                  <Op>,</Op> <Str>&quot;Prisma&quot;</Str>
-                  <Op>]</Op>
-                  <Op>,</Op>
-                </CodeLine>
-                <CodeLine n={5}>
-                  {"  "}
-                  <Prop>passion</Prop>
-                  <Op>:</Op> <Bool>true</Bool>
-                  <Op>,</Op>
-                </CodeLine>
-                <CodeLine n={6}>
-                  <Op>{"};"}</Op>
-                </CodeLine>
-                <CodeLine n={7}>{" "}</CodeLine>
-                <CodeLine n={8}>
-                  <Kw>if</Kw> <Op>(</Op>
-                  <Var>you</Var>
-                  <Op>.</Op>
-                  <Fn>haveAnIdea</Fn>
-                  <Op>())</Op> <Op>{"{"}</Op>
-                </CodeLine>
-                <CodeLine n={9}>
-                  {"  "}
-                  <Var>developer</Var>
-                  <Op>.</Op>
-                  <Fn>build</Fn>
-                  <Op>(</Op>
-                  <Var>it</Var>
-                  <Op>)</Op>
-                  <Op>;</Op>
-                </CodeLine>
-                <CodeLine n={10}>
-                  <Op>{"}"}</Op>
-                </CodeLine>
-              </code>
+            {/* code body — animated by TypeIt. Line numbers render statically
+                on the left so they stay aligned via shared line-height; TypeIt
+                streams the content into the right column. */}
+            <pre className="overflow-x-auto whitespace-pre p-5 font-mono text-[12px] leading-[1.75] md:p-6 md:text-[13px]">
+              <div className="flex gap-4">
+                <div className="select-none text-right text-zinc-700">
+                  {CODE_LINES.map((_, i) => (
+                    <div key={i}>{i + 1}</div>
+                  ))}
+                </div>
+                <div className="min-w-0 flex-1 text-zinc-300">
+                  <TypeIt
+                    options={{
+                      speed: 40,
+                      startDelay: 600,
+                      cursorChar: "▌",
+                      cursorSpeed: 900,
+                      waitUntilVisible: true,
+                      html: true,
+                      lifeLike: true,
+                    }}
+                    getBeforeInit={(instance) => {
+                      CODE_LINES.forEach((line, i) => {
+                        if (line.length > 0) instance.type(line);
+                        if (i < CODE_LINES.length - 1) instance.break();
+                      });
+                      return instance;
+                    }}
+                  />
+                </div>
+              </div>
             </pre>
           </div>
         </motion.div>
@@ -184,35 +180,3 @@ export function Contact() {
   );
 }
 
-/* ---------- syntax-highlight token components (VS Code Dark+ approximation) ---------- */
-
-function CodeLine({ n, children }: { n: number; children: React.ReactNode }) {
-  return (
-    <div className="flex gap-4">
-      <span className="w-6 select-none text-right text-zinc-700">{n}</span>
-      <span className="flex-1">{children}</span>
-    </div>
-  );
-}
-
-const Kw = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[#C586C0]">{children}</span>
-);
-const Var = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[#9CDCFE]">{children}</span>
-);
-const Prop = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[#9CDCFE]">{children}</span>
-);
-const Str = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[#CE9178]">{children}</span>
-);
-const Bool = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[#569CD6]">{children}</span>
-);
-const Fn = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[#DCDCAA]">{children}</span>
-);
-const Op = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-zinc-400">{children}</span>
-);
