@@ -51,38 +51,57 @@ export default function Home() {
   const gOutlineX = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const gOutlineY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
   // Row layout: hero(100) + spacer(30) + tech(220) + spacer(30) + projects(300) = 680vw.
-  // Total horizontal shift to land the projects' right edge at the viewport's right
-  // edge: -(680-100)/680 = -85.294%.
-  const horizontalX = useTransform(scrollYProgress, [0.35, 1], ["0%", "-85.294%"]);
+  // Total horizontal shift = 580vw. End translate = -580/680 = -85.294%.
+  //
+  // Piecewise mapping gives Projects more scroll budget per vw than Tech, so
+  // dense card content reads comfortably. With container = 1000vh:
+  //   Tech segment     [0.35 → 0.55]: 0.20 × 1000vh = 200vh of scroll for 280vw → 1.4 vw/vh
+  //   Projects segment [0.55 → 1.00]: 0.45 × 1000vh = 450vh of scroll for 300vw → 0.67 vw/vh
+  // Boundary at progress=0.55 corresponds to row_translate = -280vw (the moment
+  // Projects starts entering the viewport from the right).
+  const horizontalX = useTransform(
+    scrollYProgress,
+    [0.35, 0.55, 1],
+    ["0%", "-41.18%", "-85.294%"], // -41.18% = -280/680
+  );
 
-  // Counter-translate keeps each section's header pinned at viewport-left while
-  // the row scrolls past. Formula: counter_vw = -section_offset - horizontalX_vw.
-  // horizontalX_vw sweeps 0 → -580vw across [0.35, 1].
-  //   Tech offset = 130vw    → counter sweeps  -130 → +450
-  //   Projects offset = 380vw → counter sweeps  -380 → +200
-  const techHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-130vw", "450vw"]);
-  const projHeaderX = useTransform(scrollYProgress, [0.35, 1], ["-380vw", "200vw"]);
+  // Counter-translate keeps each section's header pinned at viewport-left.
+  // Formula: counter_vw(p) = -section_offset - horizontalX_vw(p).
+  // Because horizontalX is piecewise, each header counter is also a 3-stop ramp.
+  //   Tech offset 130:    [-130, +150, +450]   (-130 - 0, -130 - -280, -130 - -580)
+  //   Projects offset 380: [-380, -100, +200]
+  const techHeaderX = useTransform(
+    scrollYProgress,
+    [0.35, 0.55, 1],
+    ["-130vw", "150vw", "450vw"],
+  );
+  const projHeaderX = useTransform(
+    scrollYProgress,
+    [0.35, 0.55, 1],
+    ["-380vw", "-100vw", "200vw"],
+  );
 
-  // Visibility milestones (derived from horizontalX progression):
-  //   p≈0.38 — tech enters from right
-  //   p≈0.60 — tech fully in view
-  //   p≈0.66 — projects enters from right
-  //   p≈0.78 — projects fully in view
-  // Tech fades out as projects starts coming in.
+  // Visibility milestones with the new piecewise mapping:
+  //   p ≈ 0.371 — tech enters from right (horizontalX = -30)
+  //   p ≈ 0.443 — tech fully in view    (horizontalX = -130)
+  //   p = 0.55  — projects enters       (segment boundary, horizontalX = -280)
+  //   p ≈ 0.655 — tech right edge exits (horizontalX = -350)
+  //   p = 0.70  — projects fully in     (horizontalX = -380)
+  // Crossfade between tech and projects headers happens around 0.50–0.60.
   const techHeaderOpacity = useTransform(
     scrollYProgress,
-    [0.40, 0.50, 0.58, 0.66, 0.72],
+    [0.36, 0.40, 0.45, 0.50, 0.55],
     [0, 0.8, 1, 1, 0],
   );
   const projHeaderOpacity = useTransform(
     scrollYProgress,
-    [0.68, 0.74, 0.80, 0.97, 1],
+    [0.53, 0.60, 0.66, 0.97, 1],
     [0, 0.5, 1, 1, 0],
   );
 
   // Fade-up entrance per section.
-  const techY = useTransform(scrollYProgress, [0.40, 0.55], ["24px", "0px"]);
-  const projY = useTransform(scrollYProgress, [0.68, 0.78], ["24px", "0px"]);
+  const techY = useTransform(scrollYProgress, [0.36, 0.45], ["24px", "0px"]);
+  const projY = useTransform(scrollYProgress, [0.55, 0.70], ["24px", "0px"]);
 
   // Section navigation
   const NAV_ITEMS = ["HOME", "ABOUT", "SKILLS", "PROJECTS"] as const;
@@ -90,8 +109,8 @@ export default function Home() {
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     if (v < 0.05) setActiveSection("HOME");
-    else if (v < 0.40) setActiveSection("ABOUT");
-    else if (v < 0.66) setActiveSection("SKILLS");
+    else if (v < 0.36) setActiveSection("ABOUT");
+    else if (v < 0.55) setActiveSection("SKILLS");
     else setActiveSection("PROJECTS");
   });
 
@@ -101,14 +120,14 @@ export default function Home() {
     const totalScroll = container.scrollHeight - window.innerHeight;
     let targetProgress = 0;
     if (section === "HOME") targetProgress = 0;
-    else if (section === "ABOUT") targetProgress = 0.3;
-    else if (section === "SKILLS") targetProgress = 0.55;
-    else if (section === "PROJECTS") targetProgress = 0.82;
+    else if (section === "ABOUT") targetProgress = 0.20;
+    else if (section === "SKILLS") targetProgress = 0.45;
+    else if (section === "PROJECTS") targetProgress = 0.70;
     window.scrollTo({ top: container.offsetTop + totalScroll * targetProgress, behavior: "smooth" });
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[400vh] bg-[#030303] text-white ">
+    <div ref={containerRef} className="relative w-full h-[1000vh] bg-[#030303] text-white ">
       {/* Sticky container that keeps the view locked while we scroll */}
       <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center">
 
