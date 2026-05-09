@@ -187,7 +187,8 @@ export default function Home() {
           </motion.div>
 
 
-          {/* LOADING SCREEN */}
+          {/* LOADING SCREEN — pointer-events-none lets scroll pass through to the sticky
+               container. The FakeEditor inside is decorative (no tabs/clicks needed). */}
           <div className="relative z-30 w-full h-full animate-fade-up-20 pointer-events-none">
             <motion.div
               style={{
@@ -209,7 +210,7 @@ export default function Home() {
                   <TypeIt
                     options={{
                       speed: 80,
-                      waitUntilVisible: true,
+                      waitUntilVisible: false,
                       html: true,
                       loop: true,
                     }}
