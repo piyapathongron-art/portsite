@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionVa
 import { Play } from "lucide-react";
 import { useRef, useEffect, useState, useCallback } from "react";
 import TypeIt from "typeit-react";
-import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { TechStack } from "@/components/features/TechStack";
 import { Projects } from "@/components/features/Projects";
 import { Contact } from "@/components/features/Contact";
