@@ -10,7 +10,7 @@ import {
   SiDocker, SiVercel, SiRender, SiAxios, SiSwagger, SiPostman,
   SiFigma, SiGithub,
 } from "react-icons/si";
-import { Layers, Lock, Globe2, Sparkles, MousePointer2, Bot, Scissors } from "lucide-react";
+import { Layers, Lock, Globe2, MousePointer2, Bot } from "lucide-react";
 
 type IconType = ComponentType<{ size?: number | string; className?: string }>;
 
@@ -89,15 +89,12 @@ const GROUPS: SkillGroup[] = [
     ],
   },
   {
-    name: "Tools", title: "TOOLS", cols: 3, rows: 3,
+    name: "Tools", title: "TOOLS", cols: 3, rows: 2,
     skills: [
-      { name: "Git & GitHub", category: "DevOps", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "#FFFFFF", pos: { col: 1, cs: 2, row: 1, rs: 1 } },
-      { name: "Claude CLI", category: "AI Tool", selfScore: 10, marketWeight: 8, Icon: Bot, color: "#D97757", pos: { col: 3, cs: 1, row: 1, rs: 1 } },
-      { name: "Cursor", category: "AI Tool", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "#FFFFFF", pos: { col: 1, cs: 1, row: 2, rs: 1 } },
-      { name: "Figma", category: "Design", selfScore: 10, marketWeight: 9, Icon: SiFigma, color: "#F24E1E", pos: { col: 2, cs: 2, row: 2, rs: 1 } },
-      { name: "Antigravity", category: "AI Tool", selfScore: 8, marketWeight: 4, Icon: Sparkles, color: "#A78BFA", pos: { col: 1, cs: 1, row: 3, rs: 1 } },
-      { name: "Gemini CLI", category: "AI Tool", selfScore: 10, marketWeight: 6, Icon: Sparkles, color: "#4285F4", pos: { col: 2, cs: 1, row: 3, rs: 1 } },
-      { name: "Stitch", category: "Design", selfScore: 10, marketWeight: 4, Icon: Scissors, color: "#FFFFFF", pos: { col: 3, cs: 1, row: 3, rs: 1 } },
+      { name: "Git & GitHub", category: "Version Control", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "#FFFFFF", pos: { col: 1, cs: 2, row: 1, rs: 1 } },
+      { name: "AI Workflow",  category: "Claude · Gemini · Cursor", selfScore: 9, marketWeight: 8, Icon: Bot, color: "#A78BFA", pos: { col: 3, cs: 1, row: 1, rs: 1 } },
+      { name: "Cursor",       category: "AI Editor", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "#FFFFFF", pos: { col: 1, cs: 1, row: 2, rs: 1 } },
+      { name: "Figma",        category: "Design", selfScore: 10, marketWeight: 9, Icon: SiFigma, color: "#F24E1E", pos: { col: 2, cs: 2, row: 2, rs: 1 } },
     ],
   },
 ];
@@ -108,7 +105,7 @@ const CARD_BASE =
   "hover:shadow-[0_0_40px_-12px_var(--accent)]";
 
 function SkillCard({ skill }: { skill: Skill }) {
-  const { name, category, Icon, color, pos } = skill;
+  const { name, category, selfScore, Icon, color, pos } = skill;
   const area = pos.cs * pos.rs;
   const isLg = area >= 4;
   const isSm = area === 1;
@@ -135,6 +132,11 @@ function SkillCard({ skill }: { skill: Skill }) {
         <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
           {category}
         </p>
+        {isLg && (
+          <span className="mt-2 inline-block rounded-full border border-zinc-700/50 bg-white/5 px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] text-zinc-400">
+            {selfScore >= 9 ? "Expert" : selfScore >= 7 ? "Proficient" : "Familiar"}
+          </span>
+        )}
       </div>
 
       {isLg && (
@@ -163,7 +165,7 @@ const MARQUEE_TOP = [
 const MARQUEE_BOTTOM = [
   "Vue", "Angular", "Nest.js", "Prisma", "Supabase", "Firebase",
   "Vercel", "Render", "Axios", "Swagger", "Postman", "Git",
-  "Cursor", "Claude", "Gemini",
+  "Cursor", "Figma", "AI Workflow",
 ];
 
 // Reuses `animate-marquee` (defined as @theme token in app/globals.css → keyframe 0% → -50%).

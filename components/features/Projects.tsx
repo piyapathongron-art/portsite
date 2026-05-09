@@ -54,7 +54,7 @@ const PROJECTS: Project[] = [
     title: "THANTHONG DAILY GOLD",
     description: "Gold Price Tracking Platform.",
     bullets: [
-      "Expanded technical expertise by rapidly adopting modern frameworks to build a dynamic, SEO-friendly web application with strict type safety.",
+      "Built with Next.js App Router + TypeScript for type-safe SSR; managed live gold price state across 8+ components using Zustand \u2014 eliminating prop-drilling entirely.",
       "Leveraged highly efficient global state management, seamlessly syncing live gold prices and promotional data across interactive UI components and sliders.",
     ],
     techTags: ["NEXT.JS", "TYPESCRIPT", "ZUSTAND"],
