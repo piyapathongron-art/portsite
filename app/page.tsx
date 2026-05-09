@@ -8,6 +8,7 @@ import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { TechStack } from "@/components/features/TechStack";
 import { Projects } from "@/components/features/Projects";
 import { Contact } from "@/components/features/Contact";
+import { FakeEditor } from "@/components/features/FakeEditor";
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -187,49 +188,55 @@ export default function Home() {
           </motion.div>
 
 
-          {/* Welcome {Home}*/}
+          {/* LOADING SCREEN */}
           <div className="relative z-30 w-full h-full animate-fade-up-20 pointer-events-none">
             <motion.div
               style={{
                 opacity: loaderOpacity,
                 scale: loaderScale,
               }}
-              className="flex flex-col ml-20 pb-15 justify-center w-full h-full"
+              className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] items-center gap-12 w-full h-full px-20 pb-15"
             >
-              <div className="relative text-2xl md:text-4xl font-thin ">
-                Welcome to my Canvas
-              </div>
-              <div className="relative text-7xl md:text-10xl font-medium">
-                <span className="text-orange-400 text-4xl">I'm</span> Piyapat Hongron
+              {/* Left — welcome text + TypeIt */}
+              <div className="flex flex-col">
+                <div className="relative text-2xl md:text-4xl font-thin">
+                  Welcome to my Canvas
+                </div>
+                <div className="relative text-7xl md:text-10xl font-medium">
+                  <span className="text-orange-400 text-4xl">I'm</span> Piyapat Hongron
+                </div>
+                <div className="relative text-4xl md:text-6xl font-medium mt-5">
+                  <span className="text-4xl font-extralight">A</span>{" "}
+                  <TypeIt
+                    options={{
+                      speed: 80,
+                      waitUntilVisible: true,
+                      html: true,
+                      loop: true,
+                    }}
+                    getBeforeInit={(instance) => {
+                      instance
+                        .type("<span class='text-orange-400'>Full-Stack</span> Developer")
+                        .pause(2500)
+                        .delete(20)
+                        .pause(500)
+                        .type("<span class='text-orange-400'>Creative</span> Architect")
+                        .pause(2500)
+                        .delete(18)
+                        .pause(500)
+                        .type("<span class='text-orange-400'>Next.js</span> Specialist")
+                        .pause(2500)
+                        .delete(18);
+                      return instance;
+                    }}
+                  />
+                </div>
               </div>
 
-              <div className="relative text-4xl md:text-6xl font-medium mt-5">
-                <span className="text-4xl font-extralight">A</span>{" "}
-                <TypeIt
-                  options={{
-                    speed: 80,
-                    waitUntilVisible: true,
-                    html: true,
-                    loop: true,
-                  }}
-                  getBeforeInit={(instance) => {
-                    instance
-                      .type("<span class='text-orange-400'>Full-Stack</span> Developer")
-                      .pause(2500)
-                      .delete(20)
-                      .pause(500)
-                      .type("<span class='text-orange-400'>Creative</span> Architect")
-                      .pause(2500)
-                      .delete(18)
-                      .pause(500)
-                      .type("<span class='text-orange-400'>Next.js</span> Specialist")
-                      .pause(2500)
-                      .delete(18);
-                    return instance;
-                  }}
-                />
+              {/* Right — arty.ts editor, starts immediately (hero is always visible) */}
+              <div className="max-h-[300px] overflow-hidden lg:max-h-none lg:overflow-visible">
+                <FakeEditor file="arty.ts" waitUntilVisible={false} startDelay={200} />
               </div>
-
             </motion.div>
           </div>
 
