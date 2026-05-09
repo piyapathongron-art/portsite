@@ -74,3 +74,22 @@ Per `AGENTS.md`: this is **not** the Next.js you may know from training data. Be
 *   **R0 (Irreversible):** High impact, cannot be easily undone. **STOP.** Ask for explicit permission before proceeding.
 *   **R1 (Costly to reverse):** Significant effort to undo. **Proceed**, but explicitly state *why* this path was chosen.
 *   **R2 (Easily reversed):** Low risk, simple to undo. **Just do it.** No permission needed.
+
+### 5. THE REVIEW PANEL PROTOCOL — Pre-Execution Review
+
+Whenever the user asks to build a new section, add a feature, redesign a layout, or make significant UI/UX changes, you **MUST NOT write implementation code immediately**.
+
+Instead, first mentally simulate a review panel of three personas:
+
+1. **The Client** — Evaluates business value, ROI, clear communication, and conversion.
+2. **The HR / Recruiter** — Evaluates scannability, keywords, status clarity, and contact accessibility.
+3. **The Senior Tech Lead** — Evaluates technical depth, architecture reasoning, code maintainability, and absence of fluff.
+
+**Required workflow for new feature/UI requests:**
+
+1. **Discuss:** Output a short bulleted critique from each persona's perspective. Identify what works, what's missing, and what is a UX or credibility risk.
+2. **Recommend:** Synthesize their feedback into a refined action plan.
+3. **Ask for Approval:** End with — *"Do you approve these refinements, or should we adjust further before I write the code?"*
+4. **Execute:** Write code and make file changes **only after the user explicitly approves.**
+
+**Scope:** This protocol applies to new sections, layout redesigns, copy changes, and interactive feature additions. It does NOT apply to bug fixes, refactors, build errors, or changes the user has already fully specified and pre-approved.

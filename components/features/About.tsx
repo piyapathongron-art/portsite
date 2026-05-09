@@ -124,7 +124,7 @@ export function About() {
             className="flex items-center gap-3"
           >
             <span
-              className="text-5xl md:text-6xl font-black tracking-tighter text-transparent leading-none select-none"
+              className="text-4xl md:text-4xl font-black tracking-tighter text-transparent leading-none select-none"
               style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
             >
               01
@@ -159,7 +159,7 @@ export function About() {
               className="mt-4 max-w-lg text-sm md:text-base text-zinc-400 leading-relaxed"
             >
               With a focus on modern frameworks, I work across the entire
-              stack — from robust database schemas to pixel-perfect UIs —
+              stack — from robust database schemas to pixel-perfect UIs<br />
               and I speak both engineer and client fluently.
             </motion.p>
           </motion.div>

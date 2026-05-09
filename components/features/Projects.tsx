@@ -163,14 +163,14 @@ export function Projects({ headerX, headerOpacity }: Props) {
             03
           </span>
           {/* PROJECTS pill */}
-          <span className="rounded-md bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-black">
+          <span className="rounded-full border border-orange-500/30 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-orange-500 md:text-xs">
             Projects
           </span>
         </div>
         <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-white">
           Selected Work
         </h3>
-        <p className="mt-3 max-w-md text-sm md:text-base text-zinc-400">
+        <p className="mt-3  text-sm md:text-base text-zinc-400">
           Real-world platforms and developer tools, shipped to production.
         </p>
       </motion.header>

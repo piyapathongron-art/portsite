@@ -39,12 +39,18 @@ export function Contact() {
           variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           className="flex flex-col gap-7"
         >
+          <span
+            className="text-7xl md:text-8xl font-black tracking-tighter text-black border-4 leading-none select-none"
+            style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
+          >
+            04
+          </span>
           <motion.span
             variants={fadeUp}
             transition={{ duration: 0.6, ease: EASE }}
             className="inline-flex w-fit items-center rounded-full border border-orange-500/30 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-orange-500 md:text-xs"
           >
-            04 Contact
+            Contact
           </motion.span>
 
           <motion.h2
