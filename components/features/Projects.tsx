@@ -225,7 +225,7 @@ export function Projects({ headerX, headerOpacity }: Props) {
           Selected Work
         </h3>
         <p className="mt-3  text-sm md:text-base text-zinc-400">
-          Real-world platforms and developer tools, shipped to production.
+          Three real platforms. Real traffic. Real constraints solved.
         </p>
       </motion.header>
 

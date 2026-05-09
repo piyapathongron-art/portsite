@@ -229,10 +229,10 @@ export function TechStack({ headerX, headerOpacity }: Props) {
           </span>
         </div>
         <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-white">
-          Technologies I Work With
+          The Stack.
         </h3>
         <p className="mt-3 max-w-xl text-sm md:text-base text-zinc-400">
-          Across the stack — interactive frontends, scalable backend services, databases, and cloud infrastructure.
+          Tools chosen deliberately. Stack proven in production.
         </p>
       </motion.header>
 

@@ -142,14 +142,13 @@ export function About() {
             viewport={{ once: true, margin: "-100px" }}
           >
             <h2 className="text-3xl md:text-4xl xl:text-[2.75rem] font-bold leading-[1.1] tracking-tighter text-white">
-              I build{" "}
-              <GlowWord delay={0.40} reduced={reduced}>full-stack</GlowWord>
-              {" "}web products
+              I turn{" "}
+              <GlowWord delay={0.40} reduced={reduced}>ideas</GlowWord>
+              {" "}into
               <br className="hidden sm:block" />
-              {" "}that are{" "}
-              <GlowWord delay={0.52} reduced={reduced}>fast, clean,</GlowWord>
-              {" "}and{" "}
-              <GlowWord delay={0.64} reduced={reduced}>ready to ship.</GlowWord>
+              {" "}<GlowWord delay={0.52} reduced={reduced}>fast, production-ready</GlowWord>
+              <br className="hidden sm:block" />
+              {" "}web products.
             </h2>
             <motion.p
               variants={makeSlideUp(d * 0.65, 0.28)}
@@ -158,9 +157,10 @@ export function About() {
               viewport={{ once: true, margin: "-100px" }}
               className="mt-4 max-w-lg text-sm md:text-base text-zinc-400 leading-relaxed"
             >
-              With a focus on modern frameworks, I work across the entire
-              stack — from robust database schemas to pixel-perfect UIs<br />
-              and I speak both engineer and client fluently.
+              Full-stack from database schema to pixel-perfect UI.
+              I ship clean code, communicate like a client, and
+              know exactly when to choose Next.js, Prisma, or Zustand — and{" "}
+              <em className="not-italic text-zinc-200">why</em>.
             </motion.p>
           </motion.div>
 

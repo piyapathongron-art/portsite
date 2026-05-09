@@ -70,7 +70,8 @@ export function Contact() {
             transition={{ duration: 0.6, ease: EASE }}
             className="max-w-md text-base leading-relaxed text-zinc-400 md:text-lg"
           >
-            Ready to turn your idea into a product? I&apos;m just one message away.
+            Whether it&apos;s a freelance build or a full-time opportunity —{" "}
+            let&apos;s talk. I respond within 24 hours.
           </motion.p>
 
           <motion.div
