@@ -211,7 +211,7 @@ export function Contact() {
 
           <div className="overflow-hidden rounded-xl border border-zinc-800 bg-[#0A0A0A] shadow-2xl shadow-black/60">
             {/* title bar — macOS dots + animated file tabs */}
-            <div className="flex items-center gap-3 border-b border-zinc-900 bg-[#0F0F0F] px-4 py-2">
+            <div className="flex items-center gap-3 border-b border-zinc-900 bg-[#0F0F0F] px-4 py-2 justify-between">
               <div className="flex gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-[#FF5F56]" />
                 <span className="h-3 w-3 rounded-full bg-[#FFBD2E]" />
@@ -233,6 +233,20 @@ export function Contact() {
                   onClick={() => handleTabClick("contact.tsx")}
                 />
               </div>
+              {mode === "auto" && (
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse"
+                    style={{ boxShadow: "0 0 6px 1px rgba(56,189,248,0.8)" }}
+                  />
+                  <span
+                    className="text-[10px] uppercase tracking-widest text-sky-400"
+                    style={{ textShadow: "0 0 10px rgba(56,189,248,0.7)" }}
+                  >
+                    Auto
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* code body — animated by TypeIt. Line numbers render statically
