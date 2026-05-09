@@ -168,6 +168,30 @@ export default function Home() {
               )}
             </button>
           ))}
+
+          {/* Divider */}
+          <span className="hidden md:block w-px h-4 bg-zinc-700/60 shrink-0" aria-hidden />
+
+          {/* CV Download — ghost pill, always visible */}
+          <a
+            href="/Piyapat_Resume_Dev.pdf"
+            download="Piyapat_Resume_Dev.pdf"
+            className={[
+              "hidden md:inline-flex items-center gap-1.5",
+              "rounded-lg border border-zinc-700/60 bg-white/[0.03] px-3.5 py-1.5",
+              "text-[10px] font-semibold tracking-widest uppercase text-zinc-400",
+              "transition-all duration-300 ease-out",
+              "hover:border-orange-500/50 hover:text-white hover:bg-orange-500/[0.07]",
+              "hover:shadow-[0_0_16px_-4px_rgba(249,115,22,0.30)]",
+            ].join(" ")}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            CV
+          </a>
         </div>
       </nav>
       <div ref={containerRef} className="relative w-full h-[1000vh] bg-[#030303] text-white ">

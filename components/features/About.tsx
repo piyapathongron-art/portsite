@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { MapPin, GraduationCap, Clock, Layers } from "lucide-react";
+import { MapPin, GraduationCap, Clock, Layers, Download } from "lucide-react";
 import type { ComponentType } from "react";
 
 type Vital = {
@@ -163,6 +163,29 @@ export function About() {
               and I speak both engineer and client fluently.
             </motion.p>
           </motion.div>
+
+          {/* CV Download Button — sequence: between paragraph and philosophy card */}
+          <motion.a
+            href="/Piyapat_Resume_Dev.pdf"
+            download="Piyapat_Resume_Dev.pdf"
+            variants={makeSlideUp(d * 0.60, 0.48)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className={[
+              "hidden md:inline-flex items-center gap-2.5 self-start",
+              "rounded-xl border border-zinc-700/70 bg-white/[0.02] px-5 py-2.5",
+              "text-xs font-semibold tracking-widest uppercase text-zinc-300",
+              "transition-all duration-300 ease-out cursor-pointer",
+              "hover:border-orange-500/50 hover:text-white hover:bg-orange-500/[0.06]",
+              "hover:shadow-[0_0_20px_-4px_rgba(249,115,22,0.25)]",
+            ].join(" ")}
+          >
+            <Download size={13} className="shrink-0" />
+            Download CV
+          </motion.a>
 
           {/* Philosophy card — sequence: last */}
           <motion.div
