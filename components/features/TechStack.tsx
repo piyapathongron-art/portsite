@@ -212,16 +212,24 @@ export function TechStack({ headerX, headerOpacity }: Props) {
           Sits at the top; horizontal counter-translate keeps it at viewport's left
           while the bento underneath scrolls past. */}
       <motion.header
-        className="pointer-events-none absolute left-12 top-16 z-20"
+        className="pointer-events-none absolute left-12 top-12 z-20"
         style={{ x: headerX, opacity: headerOpacity }}
       >
-        <span className="mb-4 inline-block rounded-full border border-orange-500/30 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-orange-500 md:text-xs">
-          02 SKILLS
-        </span>
-        <h3 className="max-w-4xl text-4xl font-bold uppercase leading-[1.05] tracking-tighter text-white md:text-6xl">
+        <div className="flex items-center gap-4">
+          <span
+            className="text-7xl md:text-8xl font-black tracking-tighter text-transparent leading-none select-none"
+            style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
+          >
+            02
+          </span>
+          <span className="rounded-md bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-black">
+            Skills
+          </span>
+        </div>
+        <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-white">
           Technologies I Work With
         </h3>
-        <p className="mt-4 max-w-xl text-base text-zinc-400 md:text-lg">
+        <p className="mt-3 max-w-xl text-sm md:text-base text-zinc-400">
           Across the stack — interactive frontends, scalable backend services, databases, and cloud infrastructure.
         </p>
       </motion.header>

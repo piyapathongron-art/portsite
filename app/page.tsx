@@ -146,6 +146,30 @@ export default function Home() {
 
   return (
     <>
+      {/* Global Navigation — fixed outside the sticky scroller so it persists into Contact */}
+      <nav className="fixed top-0 w-full p-6 md:p-10 flex justify-end items-start z-50">
+        {/* Right Section Navigation */}
+        <div className="flex items-center gap-6 md:gap-8 mt-2">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item}
+              onClick={() => scrollToSection(item)}
+              className={`relative text-[10px] md:text-xs font-semibold tracking-widest uppercase transition-colors cursor-pointer ${
+                activeSection === item ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+              }`}
+            >
+              {item}
+              {activeSection === item && (
+                <motion.span
+                  layoutId="navDot"
+                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      </nav>
       <div ref={containerRef} className="relative w-full h-[1000vh] bg-[#030303] text-white ">
         {/* Sticky container that keeps the view locked while we scroll */}
         <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center">
@@ -240,50 +264,6 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* Fixed Top Navigation */}
-          <nav className="absolute top-0 w-full p-6 md:p-10 flex justify-end items-start z-50">
-            {/* Left Social Links */}
-            {/* <div className="flex gap-4 md:gap-6 text-[10px] md:text-xs font-semibold tracking-widest text-zinc-400 mt-2">
-            <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
-              <FaFacebookF className="text-[12px] md:text-[14px]" /> FB
-            </span>
-            <span className="text-orange-500 flex items-center">•</span>
-            <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
-              <FaGithub className="text-[12px] md:text-[14px]" /> GH
-            </span>
-            <span className="text-orange-500 flex items-center">•</span>
-            <span className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
-              <FaLinkedinIn className="text-[12px] md:text-[14px]" /> LI
-            </span>
-          </div> */}
-
-            {/* Center Logo */}
-            {/* <div className="text-3xl md:text-4xl font-medium relative mr-25 md:ml-0">
-            arty
-            <span className="absolute top-[60%] left-[12px] w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
-          </div> */}
-
-            {/* Right Section Navigation */}
-            <div className="flex items-center gap-6 md:gap-8 mt-2">
-              {NAV_ITEMS.map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className={`relative text-[10px] md:text-xs font-semibold tracking-widest uppercase transition-colors cursor-pointer ${activeSection === item ? "text-white" : "text-zinc-500 hover:text-zinc-300"
-                    }`}
-                >
-                  {item}
-                  {activeSection === item && (
-                    <motion.span
-                      layoutId="navDot"
-                      className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-          </nav>
 
           {/* Horizontal Sliding Wrapper */}
           <motion.div

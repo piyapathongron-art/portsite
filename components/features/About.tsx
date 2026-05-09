@@ -115,16 +115,24 @@ export function About() {
         {/* ── LEFT COLUMN ─────────────────────────────────────────────────── */}
         <div className="flex flex-col gap-5 min-w-0">
 
-          {/* Badge */}
-          <motion.span
+          {/* Badge — outlined section number + orange pill */}
+          <motion.div
             variants={makeSlideUp(d * 0.55, 0.10)}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="inline-flex w-fit items-center rounded-full border border-orange-500/30 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-orange-500 md:text-xs"
+            className="flex items-center gap-3"
           >
-            01 About
-          </motion.span>
+            <span
+              className="text-5xl md:text-6xl font-black tracking-tighter text-transparent leading-none select-none"
+              style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
+            >
+              01
+            </span>
+            <span className="rounded-full border border-orange-500/30 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-orange-500 md:text-xs">
+              About
+            </span>
+          </motion.div>
 
           {/* Hook heading — sequence: 1st */}
           <motion.div
