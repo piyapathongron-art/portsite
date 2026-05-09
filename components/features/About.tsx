@@ -201,22 +201,21 @@ export function About() {
             ].join(" ")}
           >
             <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-zinc-600 mb-3">
-              Philosophy &amp; Depth
+              Architecture Decisions I Can Defend
             </p>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              I architect systems using{" "}
-              <Chip>React</Chip>, <Chip>Next.js</Chip>,{" "}
-              <Chip>TypeScript</Chip>, and <Chip>Node.js</Chip>.
-              {" "}What separates my work is a focus on the{" "}
-              <em className="not-italic text-orange-400 font-medium">why</em>.
-              {" "}I choose <Chip>Prisma</Chip> because schema migrations
-              should be version-controlled. I leverage{" "}
-              <Chip>Zustand</Chip> to avoid boilerplate and keep sprint
-              velocity high. Whether it&apos;s live bi-directional sync
-              with <Chip>Socket.io</Chip> or a standard REST API, I build
-              systems that handle <Chip>real traffic</Chip> and{" "}
-              <Chip>real users</Chip>.
-            </p>
+            <ul className="space-y-2.5">
+              {([
+                { tool: "Prisma", reason: "over raw SQL — schema-as-code, type-safe migrations" },
+                { tool: "Zustand", reason: "over Redux — minimal boilerplate, no action verbosity" },
+                { tool: "Socket.io", reason: "for real-time sync — polling doesn\u2019t scale socially" },
+                { tool: "REST first", reason: "then WebSocket only when real-time is justified" },
+              ] as const).map(({ tool, reason }) => (
+                <li key={tool} className="flex items-start gap-2 text-sm text-zinc-400 leading-snug">
+                  <span className="text-orange-500/60 shrink-0 mt-0.5">→</span>
+                  <span><Chip>{tool}</Chip> {reason}</span>
+                </li>
+              ))}
+            </ul>
           </motion.div>
         </div>
 

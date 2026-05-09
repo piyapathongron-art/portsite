@@ -247,8 +247,8 @@ export default function Home() {
             >
               {/* Left — welcome text + TypeIt */}
               <div className="flex flex-col">
-                <div className="relative text-2xl md:text-4xl font-thin">
-                  Welcome to my Canvas
+                <div className="relative text-[10px] font-semibold uppercase tracking-[0.3em] text-zinc-500 mb-2">
+                  Germany &nbsp;·&nbsp; Available Now
                 </div>
                 <div className="relative text-7xl md:text-10xl font-medium">
                   <span className="text-orange-400 text-4xl">I'm</span> Piyapat Hongron
@@ -267,11 +267,11 @@ export default function Home() {
                         .type("<span class='text-orange-400'>Full-Stack</span> Developer")
                         .pause(2500)
                         .delete(20)
-                        .pause(500)
-                        .type("<span class='text-orange-400'>Creative</span> Architect")
+                        .pause(400)
+                        .type("<span class='text-orange-400'>Product</span> Builder")
                         .pause(2500)
-                        .delete(18)
-                        .pause(500)
+                        .delete(15)
+                        .pause(400)
                         .type("<span class='text-orange-400'>Next.js</span> Specialist")
                         .pause(2500)
                         .delete(18);
