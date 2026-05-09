@@ -13,6 +13,7 @@ type Project = {
   techTags: string[];
   liveDemoUrl?: string;
   sourceUrl?: string;
+  sourceUrl2?: string;
 };
 
 const PROJECTS: Project[] = [
@@ -28,6 +29,9 @@ const PROJECTS: Project[] = [
       "Seamlessly integrated Mapbox for geolocation-based restaurant tracking and Cloudinary for optimized media storage.",
     ],
     techTags: ["MYSQL", "PRISMA", "SOCKET.IO", "MAPBOX", "CLOUDINARY"],
+    liveDemoUrl: "https://wongnork-frontend.vercel.app/",
+    sourceUrl: "https://github.com/piyapathongron-art/wongnork_frontend",
+    sourceUrl2: "https://github.com/piyapathongron-art/wongnork_backend",
   },
   {
     index: "02",
@@ -40,6 +44,8 @@ const PROJECTS: Project[] = [
       "Designed and deployed scalable RESTful APIs to manage secure CRUD operations for employee assignments and internal workflows.",
     ],
     techTags: ["REACT.JS", "TAILWIND CSS", "RESTFUL API"],
+    sourceUrl: "https://github.com/piyapathongron-art/Taraville-Frontend",
+    sourceUrl2: "https://github.com/piyapathongron-art/Taraville",
   },
   {
     index: "03",
@@ -52,6 +58,8 @@ const PROJECTS: Project[] = [
       "Leveraged highly efficient global state management, seamlessly syncing live gold prices and promotional data across interactive UI components and sliders.",
     ],
     techTags: ["NEXT.JS", "TYPESCRIPT", "ZUSTAND"],
+    liveDemoUrl: "https://than-thong-daily-gold.vercel.app/",
+    sourceUrl: "https://github.com/piyapathongron-art/ThanThongDailyGold",
   },
 ];
 
@@ -77,16 +85,35 @@ function ProjectCard({ project }: { project: Project }) {
               <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-              <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60" />
+              {project.liveDemoUrl ? (
+                <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60 flex items-center px-2.5 overflow-hidden">
+                  <span className="text-[9px] text-zinc-500 truncate">
+                    {project.liveDemoUrl.replace("https://", "")}
+                  </span>
+                </span>
+              ) : (
+                <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60" />
+              )}
             </div>
-            {/* placeholder body */}
-            <div className="absolute inset-0 top-9 flex flex-col items-center justify-center gap-3 text-zinc-700">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.4em]">
+            {/* Branded visual — watermark title + tech chips */}
+            <div className="absolute inset-0 top-9 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/[0.06] via-transparent to-transparent pointer-events-none" />
+              <span
+                className="absolute -bottom-4 -left-2 text-[7rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
+                style={{ WebkitTextStroke: "1px rgba(255,255,255,0.05)", color: "transparent" }}
+              >
                 {project.title}
               </span>
-              <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-800">
-                Mockup placeholder
-              </span>
+              <div className="absolute bottom-5 left-5 flex flex-wrap gap-2">
+                {project.techTags.slice(0, 3).map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-md border border-zinc-800/80 bg-black/60 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-600"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -126,12 +153,39 @@ function ProjectCard({ project }: { project: Project }) {
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
-            <button className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-black transition hover:bg-zinc-200 cursor-pointer">
-              Live Demo <ArrowUpRight size={14} strokeWidth={2.5} />
-            </button>
-            <button className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-zinc-900 cursor-pointer">
-              <Code2 size={14} /> Source
-            </button>
+            {project.liveDemoUrl && (
+              <a
+                href={project.liveDemoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-black transition hover:bg-zinc-200"
+              >
+                Live Demo <ArrowUpRight size={14} strokeWidth={2.5} />
+              </a>
+            )}
+            {project.sourceUrl && (
+              <a
+                href={project.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-zinc-900"
+              >
+                <Code2 size={14} /> {project.sourceUrl2 ? "Frontend" : "Source"}
+              </a>
+            )}
+            {project.sourceUrl2 && (
+              <a
+                href={project.sourceUrl2}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-zinc-900"
+              >
+                <Code2 size={14} /> Backend
+              </a>
+            )}
+            {!project.liveDemoUrl && !project.sourceUrl && (
+              <span className="text-[10px] text-zinc-600 uppercase tracking-widest pt-1">Private / NDA</span>
+            )}
           </div>
         </div>
       </article>
