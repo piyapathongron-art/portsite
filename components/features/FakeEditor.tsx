@@ -13,21 +13,21 @@ type FakeEditorProps = {
 
 const span = (color: string, s: string) =>
   `<span style="color:${color}">${s}</span>`;
-const KW    = (s: string) => span("#C586C0", s);
-const ID    = (s: string) => span("#9CDCFE", s);
-const STR   = (s: string) => span("#CE9178", s);
-const BOOL  = (s: string) => span("#569CD6", s);
-const FN    = (s: string) => span("#DCDCAA", s);
-const OP    = (s: string) => span("#9CA3AF", s);
-const TAG   = (s: string) => span("#569CD6", s);
+const KW = (s: string) => span("#C586C0", s);
+const ID = (s: string) => span("#9CDCFE", s);
+const STR = (s: string) => span("#CE9178", s);
+const BOOL = (s: string) => span("#569CD6", s);
+const FN = (s: string) => span("#DCDCAA", s);
+const OP = (s: string) => span("#9CA3AF", s);
+const TAG = (s: string) => span("#569CD6", s);
 const PUNCT = (s: string) => span("#808080", s);
-const CMT   = (s: string) => span("#6A9955", s);
+const CMT = (s: string) => span("#6A9955", s);
 
-const jsxOpen  = (tag: string, attrs?: string) =>
+const jsxOpen = (tag: string, attrs?: string) =>
   `${PUNCT("&lt;")}${TAG(tag)}${attrs ? ` ${attrs}` : ""}${PUNCT("&gt;")}`;
 const jsxClose = (tag: string) =>
   `${PUNCT("&lt;/")}${TAG(tag)}${PUNCT("&gt;")}`;
-const jsxSelf  = (name: string) =>
+const jsxSelf = (name: string) =>
   `${PUNCT("&lt;")}${ID(name)} ${PUNCT("/&gt;")}`;
 const attr = (name: string, value: string) =>
   `${ID(name)}${OP("=")}${STR(`&quot;${value}&quot;`)}`;
@@ -36,7 +36,7 @@ const attr = (name: string, value: string) =>
 const ARTY_STATIC: string[] = [
   `${KW("const")} ${ID("developer")} ${OP("=")} ${OP("{")}`,
   `  ${ID("name")}${OP(":")}      ${STR("&quot;Arty (Piyapat)&quot;")}${OP(",")}`,
-  `  ${ID("location")}${OP(":")}  ${STR("&quot;Germany&quot;")}${OP(",")}`,
+  `  ${ID("location")}${OP(":")}  ${STR("&quot;Bangkok, Thailand&quot;")}${OP(",")}`,
   `  ${ID("role")}${OP(":")}      ${STR("&quot;Full-Stack Developer&quot;")}${OP(",")}`,
   `  ${ID("stack")}${OP(":")}     ${OP("[")}${STR("&quot;Next.js&quot;")}${OP(",")} ${STR("&quot;Node.js&quot;")}${OP(",")} ${STR("&quot;Prisma&quot;")}${OP(",")} ${STR("&quot;TypeScript&quot;")}${OP("]")}${OP(",")}`,
   `  ${ID("available")}${OP(":")} ${BOOL("true")}${OP(",")}`,
@@ -73,8 +73,8 @@ type FileData =
   | { type: "split"; static: string[]; typed: string[] };
 
 const FILES: Record<EditorFile, FileData> = {
-  "arty.ts":      { type: "split", static: ARTY_STATIC, typed: ARTY_TYPED },
-  "contact.tsx":  { type: "simple", lines: CONTACT_LINES },
+  "arty.ts": { type: "split", static: ARTY_STATIC, typed: ARTY_TYPED },
+  "contact.tsx": { type: "simple", lines: CONTACT_LINES },
 };
 
 export function FakeEditor({

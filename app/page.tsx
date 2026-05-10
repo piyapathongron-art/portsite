@@ -154,9 +154,8 @@ export default function Home() {
             <button
               key={item}
               onClick={() => scrollToSection(item)}
-              className={`relative text-[10px] md:text-xs font-semibold tracking-widest uppercase transition-colors cursor-pointer ${
-                activeSection === item ? "text-white" : "text-zinc-500 hover:text-zinc-300"
-              }`}
+              className={`relative text-[10px] md:text-xs font-semibold tracking-widest uppercase transition-colors cursor-pointer ${activeSection === item ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+                }`}
             >
               {item}
               {activeSection === item && (
@@ -186,9 +185,9 @@ export default function Home() {
             ].join(" ")}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
             CV
           </a>
@@ -248,7 +247,7 @@ export default function Home() {
               {/* Left — welcome text + TypeIt */}
               <div className="flex flex-col">
                 <div className="relative text-[10px] font-semibold uppercase tracking-[0.3em] text-zinc-500 mb-2">
-                  Germany &nbsp;·&nbsp; Available Now
+                  Bangkok, Thailand&nbsp;·&nbsp; Available Now
                 </div>
                 <div className="relative text-7xl md:text-10xl font-medium">
                   <span className="text-orange-400 text-4xl">I'm</span> Piyapat Hongron

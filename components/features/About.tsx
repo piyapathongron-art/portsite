@@ -17,8 +17,8 @@ const VITALS: Vital[] = [
     id: "location",
     icon: MapPin,
     label: "Location",
-    value: "Germany",
-    sub: "EU-based",
+    value: "Thailand",
+    sub: "Bangkok",
   },
   {
     id: "education",
@@ -31,8 +31,8 @@ const VITALS: Vital[] = [
     id: "experience",
     icon: Clock,
     label: "Experience",
-    value: "3+ Years",
-    sub: "Production-ready apps",
+    value: "4 Projects",
+    sub: "Fullstack · Production-deployed",
   },
   {
     id: "focus",

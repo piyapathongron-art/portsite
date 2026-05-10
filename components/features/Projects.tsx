@@ -11,6 +11,7 @@ type Project = {
   description: string;
   bullets: string[];
   techTags: string[];
+  visualStyle?: "browser" | "mobile";
   liveDemoUrl?: string;
   sourceUrl?: string;
   sourceUrl2?: string;
@@ -23,6 +24,7 @@ const PROJECTS: Project[] = [
     overline: "PO & FULL STACK DEVELOPER",
     title: "WONGNORK",
     description: "Restaurant Discovery & Bill-Splitting Platform.",
+    visualStyle: "mobile",
     bullets: [
       "Architected a robust relational database schema to handle complex, concurrent bill-splitting calculations and user-party management.",
       "Implemented low-latency, bi-directional communication to power live group chats and dynamic party status synchronizations.",
@@ -54,7 +56,7 @@ const PROJECTS: Project[] = [
     title: "THANTHONG DAILY GOLD",
     description: "Gold Price Tracking Platform.",
     bullets: [
-      "Built with Next.js App Router + TypeScript for type-safe SSR; managed live gold price state across 8+ components using Zustand \u2014 eliminating prop-drilling entirely.",
+      "Built with Next.js App Router + TypeScript for type-safe SSR; managed live gold price state across 8+ components using Zustand — eliminating prop-drilling entirely.",
       "Leveraged highly efficient global state management, seamlessly syncing live gold prices and promotional data across interactive UI components and sliders.",
     ],
     techTags: ["NEXT.JS", "TYPESCRIPT", "ZUSTAND"],
@@ -63,45 +65,90 @@ const PROJECTS: Project[] = [
   },
 ];
 
+function MobileMockup({ title }: { title: string }) {
+  return (
+    <div className="relative h-full w-full flex items-center justify-center">
+      {/* ambient glow */}
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-orange-500/5 via-transparent to-transparent" />
+
+      {/* phone shell */}
+      <div className="relative w-[185px] h-[385px] rounded-[3rem] border-2 border-zinc-700/60 bg-[#0A0A0A] shadow-[0_0_80px_-20px_rgba(249,115,22,0.22)]">
+        {/* dynamic island */}
+        <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-14 h-3.5 rounded-full bg-zinc-900 border border-zinc-800/80" />
+
+        {/* screen */}
+        <div className="absolute inset-[3px] top-10 bottom-6 rounded-[2.5rem] overflow-hidden bg-[#070707]">
+          <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 via-transparent to-transparent" />
+          {/* watermark title */}
+          <span
+            className="absolute -bottom-2 -left-3 text-[3.2rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
+            style={{ WebkitTextStroke: "1px rgba(255,255,255,0.06)", color: "transparent" }}
+          >
+            {title}
+          </span>
+        </div>
+
+        {/* home indicator */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-[3px] rounded-full bg-zinc-700/50" />
+      </div>
+
+      {/* label */}
+      <span className="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.28em] text-zinc-700">
+        Mobile First
+      </span>
+    </div>
+  );
+}
+
+function BrowserMockup({ title, liveDemoUrl }: { title: string; liveDemoUrl?: string }) {
+  return (
+    <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[#0F0F0F] border border-zinc-900/80">
+      {/* fake browser chrome */}
+      <div className="h-9 flex items-center gap-2 px-4 border-b border-zinc-900 bg-black/40">
+        <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+        <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+        <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+        {liveDemoUrl ? (
+          <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60 flex items-center px-2.5 overflow-hidden">
+            <span className="text-[9px] text-zinc-500 truncate">
+              {liveDemoUrl.replace("https://", "")}
+            </span>
+          </span>
+        ) : (
+          <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60" />
+        )}
+      </div>
+      {/* branded visual */}
+      <div className="absolute inset-0 top-9 overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-br from-orange-500/6 via-transparent to-transparent pointer-events-none" />
+        <span
+          className="absolute -bottom-4 -left-2 text-[7rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
+          style={{ WebkitTextStroke: "1px rgba(255,255,255,0.05)", color: "transparent" }}
+        >
+          {title}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="w-screen h-full shrink-0 flex items-center justify-center px-12 pt-72 pb-12">
       <article className="relative w-full max-w-[1480px] mx-auto h-full max-h-[640px] rounded-3xl border border-zinc-800/60 bg-[#0A0A0A] overflow-hidden grid grid-cols-1 lg:grid-cols-[1.15fr_1fr]">
 
-        {/* FEATURED-style badge — top-right of card */}
+        {/* badge */}
         <span className="absolute top-6 right-6 z-20 rounded-md border border-zinc-700 bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-200">
           {project.badge}
         </span>
 
         {/* Mockup area (left ~55%) */}
         <div className="relative bg-[#080808] border-b lg:border-b-0 lg:border-r border-zinc-900/80 p-6">
-          <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[#0F0F0F] border border-zinc-900/80">
-            {/* fake browser chrome */}
-            <div className="h-9 flex items-center gap-2 px-4 border-b border-zinc-900 bg-black/40">
-              <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-              <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-              <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-              {project.liveDemoUrl ? (
-                <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60 flex items-center px-2.5 overflow-hidden">
-                  <span className="text-[9px] text-zinc-500 truncate">
-                    {project.liveDemoUrl.replace("https://", "")}
-                  </span>
-                </span>
-              ) : (
-                <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60" />
-              )}
-            </div>
-            {/* Branded visual — watermark title + tech chips */}
-            <div className="absolute inset-0 top-9 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/[0.06] via-transparent to-transparent pointer-events-none" />
-              <span
-                className="absolute -bottom-4 -left-2 text-[7rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-                style={{ WebkitTextStroke: "1px rgba(255,255,255,0.05)", color: "transparent" }}
-              >
-                {project.title}
-              </span>
-            </div>
-          </div>
+          {project.visualStyle === "mobile" ? (
+            <MobileMockup title={project.title} />
+          ) : (
+            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} />
+          )}
         </div>
 
         {/* Details (right ~45%) */}
@@ -109,7 +156,7 @@ function ProjectCard({ project }: { project: Project }) {
           <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-500">
             {project.overline}
           </span>
-          <h3 className="mt-3 text-3xl xl:text-5xl font-bold uppercase tracking-tight leading-[1] text-white">
+          <h3 className="mt-3 text-3xl xl:text-5xl font-bold uppercase tracking-tight leading-none text-white">
             {project.title}
           </h3>
           <p className="mt-4 text-sm xl:text-base text-zinc-400 leading-relaxed">
@@ -180,29 +227,24 @@ function ProjectCard({ project }: { project: Project }) {
 }
 
 type Props = {
-  /** Counter-translate value (vw) so the header stays pinned at viewport's left despite section translation. */
   headerX?: MotionValue<string>;
-  /** Fade-in/out tied to the PROJECTS scroll range. */
   headerOpacity?: MotionValue<number>;
 };
 
 export function Projects({ headerX, headerOpacity }: Props) {
   return (
     <section className="relative h-full w-full text-white">
-      {/* Pinned header — counter-translated by parent's scroll progress. */}
       <motion.header
         className="pointer-events-none absolute left-12 top-12 z-20 flex flex-col"
         style={{ x: headerX, opacity: headerOpacity }}
       >
         <div className="flex items-center gap-4">
-          {/* Big outlined "03" */}
           <span
             className="text-7xl md:text-8xl font-black tracking-tighter text-transparent leading-none select-none"
             style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
           >
             03
           </span>
-          {/* PROJECTS pill */}
           <span className="rounded-full border border-orange-500/30 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-orange-500 md:text-xs">
             Projects
           </span>
@@ -210,12 +252,11 @@ export function Projects({ headerX, headerOpacity }: Props) {
         <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-white">
           Selected Work
         </h3>
-        <p className="mt-3  text-sm md:text-base text-zinc-400">
+        <p className="mt-3 text-sm md:text-base text-zinc-400">
           Three real platforms. Real traffic. Real constraints solved.
         </p>
       </motion.header>
 
-      {/* 3 horizontally-laid project cards (each 100vw). Total = 300vw, matching the section width. */}
       <motion.div
         className="flex h-full w-[300vw]"
         style={{ opacity: headerOpacity }}
