@@ -66,11 +66,7 @@ const PROJECTS: Project[] = [
 function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="w-screen h-full shrink-0 flex items-center justify-center px-12 pt-72 pb-12">
-      <article className="relative w-full max-w-[1480px] h-full max-h-[640px] rounded-3xl border border-zinc-800/60 bg-[#0A0A0A] overflow-hidden grid grid-cols-1 lg:grid-cols-[1.15fr_1fr]">
-        {/* Project index — top-left of card */}
-        <span className="absolute top-6 left-6 z-20 text-[10px] font-semibold uppercase tracking-[0.3em] text-zinc-500">
-          {project.index} / 03
-        </span>
+      <article className="relative w-full max-w-[1480px] mx-auto h-full max-h-[640px] rounded-3xl border border-zinc-800/60 bg-[#0A0A0A] overflow-hidden grid grid-cols-1 lg:grid-cols-[1.15fr_1fr]">
 
         {/* FEATURED-style badge — top-right of card */}
         <span className="absolute top-6 right-6 z-20 rounded-md border border-zinc-700 bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-200">
@@ -104,22 +100,12 @@ function ProjectCard({ project }: { project: Project }) {
               >
                 {project.title}
               </span>
-              <div className="absolute bottom-5 left-5 flex flex-wrap gap-2">
-                {project.techTags.slice(0, 3).map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-md border border-zinc-800/80 bg-black/60 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-600"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
         </div>
 
         {/* Details (right ~45%) */}
-        <div className="flex flex-col justify-center p-10 xl:p-14">
+        <div className="flex flex-col justify-center p-6 xl:p-8">
           <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-500">
             {project.overline}
           </span>
@@ -231,7 +217,7 @@ export function Projects({ headerX, headerOpacity }: Props) {
 
       {/* 3 horizontally-laid project cards (each 100vw). Total = 300vw, matching the section width. */}
       <motion.div
-        className="flex h-full w-full"
+        className="flex h-full w-[300vw]"
         style={{ opacity: headerOpacity }}
       >
         {PROJECTS.map((p) => (

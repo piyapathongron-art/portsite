@@ -21,6 +21,7 @@ const FN   = (s: string) => span("#DCDCAA", s);
 const OP   = (s: string) => span("#9CA3AF", s);
 const TAG  = (s: string) => span("#569CD6", s);
 const PUNCT = (s: string) => span("#808080", s);
+const CMT   = (s: string) => span("#6A9955", s);
 
 const jsxOpen  = (tag: string, attrs?: string) =>
   `${PUNCT("&lt;")}${TAG(tag)}${attrs ? ` ${attrs}` : ""}${PUNCT("&gt;")}`;
@@ -33,14 +34,19 @@ const attr = (name: string, value: string) =>
 
 const ARTY_LINES: string[] = [
   `${KW("const")} ${ID("developer")} ${OP("=")} ${OP("{")}`,
-  `  ${ID("name")}${OP(":")} ${STR("&quot;Arty (Piyapat)&quot;")}${OP(",")}`,
-  `  ${ID("role")}${OP(":")} ${STR("&quot;Full-Stack Developer&quot;")}${OP(",")}`,
-  `  ${ID("stack")}${OP(":")} ${OP("[")}${STR("&quot;React&quot;")}${OP(",")} ${STR("&quot;Next.js&quot;")}${OP(",")} ${STR("&quot;Node.js&quot;")}${OP(",")} ${STR("&quot;Prisma&quot;")}${OP("]")}${OP(",")}`,
-  `  ${ID("passion")}${OP(":")} ${BOOL("true")}${OP(",")}`,
+  `  ${ID("name")}${OP(":")}      ${STR("&quot;Arty (Piyapat)&quot;")}${OP(",")}`,
+  `  ${ID("location")}${OP(":")}  ${STR("&quot;Bangkok, Thailand&quot;")}${OP(",")}`,
+  `  ${ID("role")}${OP(":")}      ${STR("&quot;Full-Stack Developer&quot;")}${OP(",")}`,
+  `  ${ID("stack")}${OP(":")}     ${OP("[")}${STR("&quot;Next.js&quot;")}${OP(",")} ${STR("&quot;Node.js&quot;")}${OP(",")} ${STR("&quot;Prisma&quot;")}${OP(",")} ${STR("&quot;TypeScript&quot;")}${OP("]")}${OP(",")}`,
+  `  ${ID("available")}${OP(":")} ${BOOL("true")}${OP(",")}`,
   `${OP("};")}`,
   ``,
+  `${CMT("// I choose tools for reasons, not trends.")}`,
+  `${CMT("// Prisma → schema-as-code. Zustand → no boilerplate.")}`,
+  `${CMT("// Socket.io → only when polling won't cut it.")}`,
+  ``,
   `${KW("if")} ${OP("(")}${ID("you")}${OP(".")}${FN("haveAnIdea")}${OP("())")} ${OP("{")}`,
-  `  ${ID("developer")}${OP(".")}${FN("build")}${OP("(")}${ID("it")}${OP(")")}${OP(";")}`,
+  `  ${ID("developer")}${OP(".")}${FN("build")}${OP("(")}${ID("it")}${OP(",")} ${OP("{")} ${ID("fast")}${OP(":")} ${BOOL("true")}${OP(",")} ${ID("clean")}${OP(":")} ${BOOL("true")} ${OP("}")}${OP(")")}${OP(";")}`,
   `${OP("}")}`,
 ];
 

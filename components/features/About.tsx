@@ -17,15 +17,15 @@ const VITALS: Vital[] = [
     id: "location",
     icon: MapPin,
     label: "Location",
-    value: "Germany",
-    sub: "Originally from Thailand",
+    value: "Thailand",
+    sub: "Bangkok",
   },
   {
     id: "education",
     icon: GraduationCap,
     label: "Education",
     value: "Fullstack + Media",
-    sub: "CodeCamp & BA Innovative Media",
+    sub: "CodeCamp & Innovative Media Production",
   },
   {
     id: "experience",

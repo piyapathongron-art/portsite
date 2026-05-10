@@ -89,12 +89,12 @@ const GROUPS: SkillGroup[] = [
     ],
   },
   {
-    name: "Tools", title: "TOOLS", cols: 3, rows: 2,
+    name: "Tools", title: "TOOLS", cols: 3, rows: 3,
     skills: [
-      { name: "Git & GitHub", category: "Version Control", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "#FFFFFF", pos: { col: 1, cs: 2, row: 1, rs: 1 } },
-      { name: "AI Workflow",  category: "Claude · Gemini · Cursor", selfScore: 9, marketWeight: 8, Icon: Bot, color: "#A78BFA", pos: { col: 3, cs: 1, row: 1, rs: 1 } },
-      { name: "Cursor",       category: "AI Editor", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "#FFFFFF", pos: { col: 1, cs: 1, row: 2, rs: 1 } },
-      { name: "Figma",        category: "Design", selfScore: 10, marketWeight: 9, Icon: SiFigma, color: "#F24E1E", pos: { col: 2, cs: 2, row: 2, rs: 1 } },
+      { name: "Git & GitHub", category: "Version Control", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "#FFFFFF", pos: { col: 1, cs: 3, row: 1, rs: 1 } },
+      { name: "AI Workflow", category: "Claude · Gemini", selfScore: 9, marketWeight: 8, Icon: Bot, color: "#A78BFA", pos: { col: 1, cs: 2, row: 3, rs: 1 } },
+      { name: "Cursor", category: "AI Editor", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "#FFFFFF", pos: { col: 1, cs: 1, row: 2, rs: 1 } },
+      { name: "Figma", category: "Design", selfScore: 10, marketWeight: 9, Icon: SiFigma, color: "#F24E1E", pos: { col: 2, cs: 2, row: 2, rs: 1 } },
     ],
   },
 ];
@@ -108,6 +108,7 @@ function SkillCard({ skill }: { skill: Skill }) {
   const { name, category, selfScore, Icon, color, pos } = skill;
   const area = pos.cs * pos.rs;
   const isLg = area >= 4;
+  const isMd = area === 3;
   const isSm = area === 1;
   const iconSize = isLg ? 38 : isSm ? 22 : 28;
 
@@ -137,9 +138,21 @@ function SkillCard({ skill }: { skill: Skill }) {
             {selfScore >= 9 ? "Expert" : selfScore >= 7 ? "Proficient" : "Familiar"}
           </span>
         )}
+        {isMd && (
+          <span className="bottom-15 right-0 absolute rounded-full border border-zinc-700/50 bg-white/5 px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] text-zinc-400">
+            {selfScore >= 9 ? "Expert" : selfScore >= 7 ? "Proficient" : "Familiar"}
+          </span>
+        )}
       </div>
 
       {isLg && (
+        <Icon
+          size={220}
+          className="pointer-events-none absolute -bottom-12 -right-12 text-zinc-700/15 transition-colors duration-300 group-hover:text-[color-mix(in_srgb,var(--accent)_15%,transparent)]"
+        />
+      )}
+
+      {isMd && (
         <Icon
           size={220}
           className="pointer-events-none absolute -bottom-12 -right-12 text-zinc-700/15 transition-colors duration-300 group-hover:text-[color-mix(in_srgb,var(--accent)_15%,transparent)]"
