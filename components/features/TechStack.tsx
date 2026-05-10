@@ -100,8 +100,8 @@ const GROUPS: SkillGroup[] = [
 ];
 
 const CARD_BASE =
-  "group relative overflow-hidden rounded-2xl border border-zinc-800/60 bg-[#101010] p-4 " +
-  "transition-all duration-300 hover:border-zinc-700 hover:bg-[#151515] " +
+  "group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/60 bg-white dark:bg-[#101010] p-4 " +
+  "transition-all duration-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-[#151515] " +
   "hover:shadow-[0_0_40px_-12px_var(--accent)]";
 
 function SkillCard({ skill }: { skill: Skill }) {
@@ -123,7 +123,7 @@ function SkillCard({ skill }: { skill: Skill }) {
     >
       <Icon
         size={iconSize}
-        className="relative z-10 text-zinc-400 transition-colors duration-300 group-hover:text-(--accent)"
+        className="relative z-10 text-zinc-500 dark:text-zinc-400 transition-colors duration-300 group-hover:text-(--accent)"
       />
 
       <div className="relative z-10 mt-auto">
@@ -134,12 +134,12 @@ function SkillCard({ skill }: { skill: Skill }) {
           {category}
         </p>
         {isLg && (
-          <span className="mt-2 inline-block rounded-full border border-zinc-700/50 bg-white/5 px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] text-zinc-400">
+          <span className="mt-2 inline-block rounded-full border border-zinc-200 dark:border-zinc-700/50 bg-black/[0.04] dark:bg-white/5 px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] text-zinc-600 dark:text-zinc-400">
             {selfScore >= 9 ? "Expert" : selfScore >= 7 ? "Proficient" : "Familiar"}
           </span>
         )}
         {isMd && (
-          <span className="bottom-15 right-0 absolute rounded-full border border-zinc-700/50 bg-white/5 px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] text-zinc-400">
+          <span className="bottom-15 right-0 absolute rounded-full border border-zinc-200 dark:border-zinc-700/50 bg-black/[0.04] dark:bg-white/5 px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] text-zinc-600 dark:text-zinc-400">
             {selfScore >= 9 ? "Expert" : selfScore >= 7 ? "Proficient" : "Familiar"}
           </span>
         )}
@@ -148,14 +148,14 @@ function SkillCard({ skill }: { skill: Skill }) {
       {isLg && (
         <Icon
           size={220}
-          className="pointer-events-none absolute -bottom-12 -right-12 text-zinc-700/15 transition-colors duration-300 group-hover:text-[color-mix(in_srgb,var(--accent)_15%,transparent)]"
+          className="pointer-events-none absolute -bottom-12 -right-12 text-zinc-300/40 dark:text-zinc-700/15 transition-colors duration-300 group-hover:text-[color-mix(in_srgb,var(--accent)_15%,transparent)]"
         />
       )}
 
       {isMd && (
         <Icon
           size={220}
-          className="pointer-events-none absolute -bottom-12 -right-12 text-zinc-700/15 transition-colors duration-300 group-hover:text-[color-mix(in_srgb,var(--accent)_15%,transparent)]"
+          className="pointer-events-none absolute -bottom-12 -right-12 text-zinc-300/40 dark:text-zinc-700/15 transition-colors duration-300 group-hover:text-[color-mix(in_srgb,var(--accent)_15%,transparent)]"
         />
       )}
 
@@ -196,7 +196,7 @@ function MarqueeRow({
   return (
     <div className="overflow-hidden">
       <div
-        className="flex w-max animate-marquee items-center gap-6 pr-6 text-[10px] font-semibold uppercase tracking-[0.3em] text-zinc-700"
+        className="flex w-max animate-marquee items-center gap-6 pr-6 text-[10px] font-semibold uppercase tracking-[0.3em] text-zinc-400 dark:text-zinc-700"
         style={{
           animationDuration: `${durationSec}s`,
           animationDirection: reverse ? "reverse" : "normal",
@@ -222,7 +222,7 @@ type Props = {
 
 export function TechStack({ headerX, headerOpacity }: Props) {
   return (
-    <section className="relative h-full w-full text-white">
+    <section className="relative h-full w-full">
       {/* Pinned header — absolute + counter-translated by parent's scroll progress.
           Sits at the top; horizontal counter-translate keeps it at viewport's left
           while the bento underneath scrolls past. */}
@@ -233,7 +233,7 @@ export function TechStack({ headerX, headerOpacity }: Props) {
         <div className="flex items-center gap-4">
           <span
             className="text-4xl md:text-4xl font-black tracking-tighter text-transparent leading-none select-none"
-            style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
+            style={{ WebkitTextStroke: "1.5px var(--section-stroke)" }}
           >
             02
           </span>
@@ -241,10 +241,10 @@ export function TechStack({ headerX, headerOpacity }: Props) {
             Skills
           </span>
         </div>
-        <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-white">
+        <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-zinc-900 dark:text-white">
           The Stack.
         </h3>
-        <p className="mt-3 max-w-xl text-sm md:text-base text-zinc-400">
+        <p className="mt-3 max-w-xl text-sm md:text-base text-zinc-600 dark:text-zinc-400">
           Tools chosen deliberately. Stack proven in production.
         </p>
       </motion.header>
@@ -278,7 +278,7 @@ export function TechStack({ headerX, headerOpacity }: Props) {
 
       {/* Subtle bottom marquee — same fade timing as the header */}
       <motion.div
-        className="absolute bottom-0 left-0 z-10 flex w-full flex-col gap-1 border-t border-zinc-900/60 bg-black/40 py-3"
+        className="absolute bottom-0 left-0 z-10 flex w-full flex-col gap-1 border-t border-zinc-200/60 dark:border-zinc-900/60 bg-white/80 dark:bg-black/40 py-3"
         style={{ opacity: headerOpacity }}
       >
         <MarqueeRow items={MARQUEE_TOP} reverse durationSec={50} />

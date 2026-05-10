@@ -8,6 +8,7 @@ import { Projects } from "@/components/features/Projects";
 import { Contact } from "@/components/features/Contact";
 import { FakeEditor } from "@/components/features/FakeEditor";
 import { About } from "@/components/features/About";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -154,7 +155,7 @@ export default function Home() {
             <button
               key={item}
               onClick={() => scrollToSection(item)}
-              className={`relative text-[10px] md:text-xs font-semibold tracking-widest uppercase transition-colors cursor-pointer ${activeSection === item ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+              className={`relative text-[10px] md:text-xs font-semibold tracking-widest uppercase transition-colors cursor-pointer ${activeSection === item ? "text-zinc-900 dark:text-white" : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300"
                 }`}
             >
               {item}
@@ -169,7 +170,7 @@ export default function Home() {
           ))}
 
           {/* Divider */}
-          <span className="hidden md:block w-px h-4 bg-zinc-700/60 shrink-0" aria-hidden />
+          <span className="hidden md:block w-px h-4 bg-zinc-300 dark:bg-zinc-700/60 shrink-0" aria-hidden />
 
           {/* CV Download — ghost pill, always visible */}
           <a
@@ -177,10 +178,10 @@ export default function Home() {
             download="Piyapat_Resume_Dev.pdf"
             className={[
               "hidden md:inline-flex items-center gap-1.5",
-              "rounded-lg border border-zinc-700/60 bg-white/[0.03] px-3.5 py-1.5",
-              "text-[10px] font-semibold tracking-widest uppercase text-zinc-400",
+              "rounded-lg border border-zinc-300 dark:border-zinc-700/60 bg-black/[0.04] dark:bg-white/[0.03] px-3.5 py-1.5",
+              "text-[10px] font-semibold tracking-widest uppercase text-zinc-600 dark:text-zinc-400",
               "transition-all duration-300 ease-out",
-              "hover:border-orange-500/50 hover:text-white hover:bg-orange-500/[0.07]",
+              "hover:border-orange-500/50 hover:text-zinc-900 dark:hover:text-white hover:bg-orange-500/[0.07]",
               "hover:shadow-[0_0_16px_-4px_rgba(249,115,22,0.30)]",
             ].join(" ")}
           >
@@ -191,9 +192,10 @@ export default function Home() {
             </svg>
             CV
           </a>
+          <ThemeToggle />
         </div>
       </nav>
-      <div ref={containerRef} className="relative w-full h-[1000vh] bg-[#030303] text-white ">
+      <div ref={containerRef} className="relative w-full h-[1000vh] bg-[var(--bg-base)]">
         {/* Sticky container that keeps the view locked while we scroll */}
         <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center">
 
@@ -207,14 +209,14 @@ export default function Home() {
             className="absolute z-0 bottom-20 text-[60vw] md:text-[50rem] font-medium leading-none tracking-tighter flex items-center justify-center pointer-events-none"
           >
             <motion.span
-              className="text-transparent bg-clip-text bg-linear-to-b from-zinc-600/30 via-zinc-800/10 to-transparent opacity-50"
+              className="text-transparent bg-clip-text bg-linear-to-b from-zinc-300/25 via-zinc-200/10 dark:from-zinc-600/30 dark:via-zinc-800/10 to-transparent opacity-50"
               style={{
                 x: parallaxX,
                 y: parallaxY,
                 rotateX,
                 rotateY,
-                WebkitTextStroke: "1px rgba(255, 255, 255, 0.15)",
-                textShadow: "0px -1px 1px rgba(255, 255, 255, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.8), 0px 15px 30px rgba(0, 0, 0, 0.9), 0px 30px 60px rgba(249, 115, 22, 0.08)"
+                WebkitTextStroke: "1px var(--glyph-stroke)",
+                textShadow: "var(--glyph-text-shadow)"
               }}
             >
               <span className="animate-fade-up-10">

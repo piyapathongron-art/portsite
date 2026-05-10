@@ -125,7 +125,7 @@ export function About() {
           >
             <span
               className="text-4xl md:text-4xl font-black tracking-tighter text-transparent leading-none select-none"
-              style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
+              style={{ WebkitTextStroke: "1.5px var(--section-stroke)" }}
             >
               01
             </span>
@@ -141,7 +141,7 @@ export function About() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
           >
-            <h2 className="text-3xl md:text-4xl xl:text-[2.75rem] font-bold leading-[1.1] tracking-tighter text-white">
+            <h2 className="text-3xl md:text-4xl xl:text-[2.75rem] font-bold leading-[1.1] tracking-tighter text-zinc-900 dark:text-white">
               I turn{" "}
               <GlowWord delay={0.40} reduced={reduced}>ideas</GlowWord>
               {" "}into
@@ -155,7 +155,7 @@ export function About() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
-              className="mt-4 max-w-lg text-sm md:text-base text-zinc-400 leading-relaxed"
+              className="mt-4 max-w-lg text-sm md:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed"
             >
               Full-stack from database schema to pixel-perfect UI.
               I ship clean code, communicate like a client, and
@@ -176,10 +176,10 @@ export function About() {
             whileTap={{ scale: 0.97 }}
             className={[
               "hidden md:inline-flex items-center gap-2.5 self-start",
-              "rounded-xl border border-zinc-700/70 bg-white/[0.02] px-5 py-2.5",
-              "text-xs font-semibold tracking-widest uppercase text-zinc-300",
+              "rounded-xl border border-zinc-300 dark:border-zinc-700/70 bg-black/[0.02] dark:bg-white/[0.02] px-5 py-2.5",
+              "text-xs font-semibold tracking-widest uppercase text-zinc-700 dark:text-zinc-300",
               "transition-all duration-300 ease-out cursor-pointer",
-              "hover:border-orange-500/50 hover:text-white hover:bg-orange-500/[0.06]",
+              "hover:border-orange-500/50 hover:text-zinc-900 dark:hover:text-white hover:bg-orange-500/[0.06]",
               "hover:shadow-[0_0_20px_-4px_rgba(249,115,22,0.25)]",
             ].join(" ")}
           >
@@ -194,9 +194,9 @@ export function About() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             className={[
-              "hidden md:block rounded-2xl border border-zinc-800/60 bg-white/[0.02] p-5 xl:p-6",
+              "hidden md:block rounded-2xl border border-zinc-200 dark:border-zinc-800/60 bg-white dark:bg-white/[0.02] p-5 xl:p-6",
               "cursor-default transition-all duration-500 ease-out",
-              "hover:-translate-y-0.5 hover:border-zinc-700/70 hover:bg-white/[0.035]",
+              "hover:-translate-y-0.5 hover:border-zinc-300 dark:hover:border-zinc-700/70 hover:bg-zinc-50 dark:hover:bg-white/[0.035]",
               "hover:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.55)]",
             ].join(" ")}
           >
@@ -210,7 +210,7 @@ export function About() {
                 { tool: "Socket.io", reason: "for real-time sync — polling doesn\u2019t scale socially" },
                 { tool: "REST first", reason: "then WebSocket only when real-time is justified" },
               ] as const).map(({ tool, reason }) => (
-                <li key={tool} className="flex items-start gap-2 text-sm text-zinc-400 leading-snug">
+                <li key={tool} className="flex items-start gap-2 text-sm text-zinc-600 dark:text-zinc-400 leading-snug">
                   <span className="text-orange-500/60 shrink-0 mt-0.5">→</span>
                   <span><Chip>{tool}</Chip> {reason}</span>
                 </li>
@@ -244,10 +244,10 @@ export function About() {
                 Status
               </span>
             </div>
-            <p className="text-white font-bold text-base leading-tight">
+            <p className="text-zinc-900 dark:text-white font-bold text-base leading-tight">
               Available Now
             </p>
-            <p className="text-zinc-400 text-xs mt-1 leading-relaxed">
+            <p className="text-zinc-600 dark:text-zinc-400 text-xs mt-1 leading-relaxed">
               Open to freelance projects &amp; full-time roles
             </p>
           </motion.div>
@@ -262,21 +262,21 @@ export function About() {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
                 className={[
-                  "group rounded-xl border border-zinc-800/60 bg-white/[0.02] p-4 flex flex-col gap-2.5",
+                  "group rounded-xl border border-zinc-200 dark:border-zinc-800/60 bg-white dark:bg-white/[0.02] p-4 flex flex-col gap-2.5",
                   "cursor-default transition-all duration-500 ease-out",
-                  "hover:-translate-y-[3px] hover:border-zinc-700/80 hover:bg-white/[0.04]",
+                  "hover:-translate-y-[3px] hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:bg-zinc-50 dark:hover:bg-white/[0.04]",
                   "hover:shadow-[0_8px_28px_-8px_rgba(0,0,0,0.50)]",
                 ].join(" ")}
               >
                 <v.icon
                   size={15}
-                  className="text-zinc-600 transition-colors duration-300 group-hover:text-zinc-400"
+                  className="text-zinc-400 dark:text-zinc-600 transition-colors duration-300 group-hover:text-zinc-700 dark:group-hover:text-zinc-400"
                 />
                 <div>
                   <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-600 mb-0.5">
                     {v.label}
                   </p>
-                  <p className="text-sm font-bold text-white leading-tight">
+                  <p className="text-sm font-bold text-zinc-900 dark:text-white leading-tight">
                     {v.value}
                   </p>
                   <p className="text-[11px] text-zinc-500 mt-0.5 leading-tight">

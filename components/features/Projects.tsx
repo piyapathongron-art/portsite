@@ -68,32 +68,25 @@ const PROJECTS: Project[] = [
 function MobileMockup({ title }: { title: string }) {
   return (
     <div className="relative h-full w-full flex items-center justify-center">
-      {/* ambient glow */}
       <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-orange-500/5 via-transparent to-transparent" />
-
       {/* phone shell */}
-      <div className="relative w-[185px] h-[385px] rounded-[3rem] border-2 border-zinc-700/60 bg-[#0A0A0A] shadow-[0_0_80px_-20px_rgba(249,115,22,0.22)]">
+      <div className="relative w-[185px] h-[385px] rounded-[3rem] border-2 border-zinc-300 dark:border-zinc-700/60 bg-[var(--bg-surface)] shadow-[0_0_80px_-20px_rgba(249,115,22,0.22)]">
         {/* dynamic island */}
-        <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-14 h-3.5 rounded-full bg-zinc-900 border border-zinc-800/80" />
-
+        <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-14 h-3.5 rounded-full bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800/80" />
         {/* screen */}
-        <div className="absolute inset-[3px] top-10 bottom-6 rounded-[2.5rem] overflow-hidden bg-[#070707]">
+        <div className="absolute inset-[3px] top-10 bottom-6 rounded-[2.5rem] overflow-hidden bg-[var(--bg-muted)]">
           <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 via-transparent to-transparent" />
-          {/* watermark title */}
           <span
             className="absolute -bottom-2 -left-3 text-[3.2rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-            style={{ WebkitTextStroke: "1px rgba(255,255,255,0.06)", color: "transparent" }}
+            style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
           >
             {title}
           </span>
         </div>
-
         {/* home indicator */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-[3px] rounded-full bg-zinc-700/50" />
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-[3px] rounded-full bg-zinc-300/60 dark:bg-zinc-700/50" />
       </div>
-
-      {/* label */}
-      <span className="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.28em] text-zinc-700">
+      <span className="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.28em] text-zinc-400 dark:text-zinc-700">
         Mobile First
       </span>
     </div>
@@ -102,20 +95,20 @@ function MobileMockup({ title }: { title: string }) {
 
 function BrowserMockup({ title, liveDemoUrl }: { title: string; liveDemoUrl?: string }) {
   return (
-    <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[#0F0F0F] border border-zinc-900/80">
-      {/* fake browser chrome */}
-      <div className="h-9 flex items-center gap-2 px-4 border-b border-zinc-900 bg-black/40">
-        <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-        <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-        <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+    <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80">
+      {/* browser chrome */}
+      <div className="h-9 flex items-center gap-2 px-4 border-b border-zinc-200/60 dark:border-zinc-900 bg-[var(--bg-surface)]">
+        <span className="h-2.5 w-2.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
+        <span className="h-2.5 w-2.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
+        <span className="h-2.5 w-2.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
         {liveDemoUrl ? (
-          <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60 flex items-center px-2.5 overflow-hidden">
+          <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-200/60 dark:bg-zinc-900/60 flex items-center px-2.5 overflow-hidden">
             <span className="text-[9px] text-zinc-500 truncate">
               {liveDemoUrl.replace("https://", "")}
             </span>
           </span>
         ) : (
-          <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-900/60" />
+          <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-200/60 dark:bg-zinc-900/60" />
         )}
       </div>
       {/* branded visual */}
@@ -123,7 +116,7 @@ function BrowserMockup({ title, liveDemoUrl }: { title: string; liveDemoUrl?: st
         <div className="absolute inset-0 bg-linear-to-br from-orange-500/6 via-transparent to-transparent pointer-events-none" />
         <span
           className="absolute -bottom-4 -left-2 text-[7rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-          style={{ WebkitTextStroke: "1px rgba(255,255,255,0.05)", color: "transparent" }}
+          style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
         >
           {title}
         </span>
@@ -135,15 +128,15 @@ function BrowserMockup({ title, liveDemoUrl }: { title: string; liveDemoUrl?: st
 function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="w-screen h-full shrink-0 flex items-center justify-center px-12 pt-72 pb-12">
-      <article className="relative w-full max-w-[1480px] mx-auto h-full max-h-[640px] rounded-3xl border border-zinc-800/60 bg-[#0A0A0A] overflow-hidden grid grid-cols-1 lg:grid-cols-[1.15fr_1fr]">
+      <article className="relative w-full max-w-[1480px] mx-auto h-full max-h-[640px] rounded-3xl border border-zinc-200/60 dark:border-zinc-800/60 bg-[var(--bg-surface)] overflow-hidden grid grid-cols-1 lg:grid-cols-[1.15fr_1fr]">
 
         {/* badge */}
-        <span className="absolute top-6 right-6 z-20 rounded-md border border-zinc-700 bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-200">
+        <span className="absolute top-6 right-6 z-20 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white/80 dark:bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-700 dark:text-zinc-200">
           {project.badge}
         </span>
 
         {/* Mockup area (left ~55%) */}
-        <div className="relative bg-[#080808] border-b lg:border-b-0 lg:border-r border-zinc-900/80 p-6">
+        <div className="relative bg-[var(--bg-muted)] border-b lg:border-b-0 lg:border-r border-zinc-100 dark:border-zinc-900/80 p-6">
           {project.visualStyle === "mobile" ? (
             <MobileMockup title={project.title} />
           ) : (
@@ -156,16 +149,16 @@ function ProjectCard({ project }: { project: Project }) {
           <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-500">
             {project.overline}
           </span>
-          <h3 className="mt-3 text-3xl xl:text-5xl font-bold uppercase tracking-tight leading-none text-white">
+          <h3 className="mt-3 text-3xl xl:text-5xl font-bold uppercase tracking-tight leading-none text-zinc-900 dark:text-white">
             {project.title}
           </h3>
-          <p className="mt-4 text-sm xl:text-base text-zinc-400 leading-relaxed">
+          <p className="mt-4 text-sm xl:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
             {project.description}
           </p>
 
           <ul className="mt-6 space-y-3">
             {project.bullets.map((b, i) => (
-              <li key={i} className="flex gap-3 text-xs xl:text-sm text-zinc-300 leading-relaxed">
+              <li key={i} className="flex gap-3 text-xs xl:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
                 <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-emerald-500/15">
                   <Check className="h-2.5 w-2.5 text-emerald-400" strokeWidth={3} />
                 </span>
@@ -178,7 +171,7 @@ function ProjectCard({ project }: { project: Project }) {
             {project.techTags.map((t) => (
               <span
                 key={t}
-                className="rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400"
+                className="rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-600 dark:text-zinc-400"
               >
                 {t}
               </span>
@@ -201,7 +194,7 @@ function ProjectCard({ project }: { project: Project }) {
                 href={project.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-zinc-900"
+                className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 dark:border-zinc-700 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-zinc-800 dark:text-white transition hover:bg-zinc-100 dark:hover:bg-zinc-900"
               >
                 <Code2 size={14} /> {project.sourceUrl2 ? "Frontend" : "Source"}
               </a>
@@ -211,7 +204,7 @@ function ProjectCard({ project }: { project: Project }) {
                 href={project.sourceUrl2}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-zinc-900"
+                className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 dark:border-zinc-700 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-zinc-800 dark:text-white transition hover:bg-zinc-100 dark:hover:bg-zinc-900"
               >
                 <Code2 size={14} /> Backend
               </a>
@@ -233,7 +226,7 @@ type Props = {
 
 export function Projects({ headerX, headerOpacity }: Props) {
   return (
-    <section className="relative h-full w-full text-white">
+    <section className="relative h-full w-full">
       <motion.header
         className="pointer-events-none absolute left-12 top-12 z-20 flex flex-col"
         style={{ x: headerX, opacity: headerOpacity }}
@@ -241,7 +234,7 @@ export function Projects({ headerX, headerOpacity }: Props) {
         <div className="flex items-center gap-4">
           <span
             className="text-7xl md:text-8xl font-black tracking-tighter text-transparent leading-none select-none"
-            style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
+            style={{ WebkitTextStroke: "1.5px var(--section-stroke)" }}
           >
             03
           </span>
@@ -249,10 +242,10 @@ export function Projects({ headerX, headerOpacity }: Props) {
             Projects
           </span>
         </div>
-        <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-white">
+        <h3 className="mt-4 text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-zinc-900 dark:text-white">
           Selected Work
         </h3>
-        <p className="mt-3 text-sm md:text-base text-zinc-400">
+        <p className="mt-3 text-sm md:text-base text-zinc-600 dark:text-zinc-400">
           Three real platforms. Real traffic. Real constraints solved.
         </p>
       </motion.header>

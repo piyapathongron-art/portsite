@@ -20,13 +20,13 @@ export function Contact() {
     <section
       ref={ref}
       id="contact"
-      className="relative w-full min-h-screen bg-[#030303] text-white px-8 md:px-16 py-24 flex items-center overflow-hidden"
+      className="relative w-full min-h-screen bg-[var(--bg-base)] px-8 md:px-16 py-24 flex items-center overflow-hidden"
     >
       {/* Faint background glyph echo from the hero (decorative) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-40 -right-20 select-none text-[40rem] font-medium leading-none tracking-tighter text-zinc-900/40"
-        style={{ WebkitTextStroke: "1px rgba(255,255,255,0.04)" }}
+        className="pointer-events-none absolute -bottom-40 -right-20 select-none text-[40rem] font-medium leading-none tracking-tighter text-zinc-200/50 dark:text-zinc-900/40"
+        style={{ WebkitTextStroke: "1px var(--watermark-stroke)" }}
       >
         &lt;/&gt;
       </div>
@@ -40,8 +40,8 @@ export function Contact() {
           className="flex flex-col gap-7"
         >
           <span
-            className="text-7xl md:text-8xl font-black tracking-tighter text-black border-4 leading-none select-none"
-            style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.18)" }}
+            className="text-7xl md:text-8xl font-black tracking-tighter text-transparent leading-none select-none"
+            style={{ WebkitTextStroke: "1.5px var(--section-stroke)" }}
           >
             04
           </span>
@@ -56,7 +56,7 @@ export function Contact() {
           <motion.h2
             variants={fadeUp}
             transition={{ duration: 0.7, ease: EASE }}
-            className="text-5xl font-black uppercase leading-[0.92] tracking-tighter md:text-7xl xl:text-8xl"
+            className="text-5xl font-black uppercase leading-[0.92] tracking-tighter md:text-7xl xl:text-8xl text-zinc-900 dark:text-white"
           >
             Let&apos;s Build
             <br />
@@ -68,7 +68,7 @@ export function Contact() {
           <motion.p
             variants={fadeUp}
             transition={{ duration: 0.6, ease: EASE }}
-            className="max-w-md text-base leading-relaxed text-zinc-400 md:text-lg"
+            className="max-w-md text-base leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-lg"
           >
             Whether it&apos;s a freelance build or a full-time opportunity —{" "}
             let&apos;s talk. I respond within 24 hours.
@@ -81,7 +81,7 @@ export function Contact() {
           >
             <a
               href="mailto:piyapathongron@gmail.com"
-              className="group inline-flex items-center gap-3 rounded-lg bg-white px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-black transition hover:bg-zinc-200 md:text-sm"
+              className="group inline-flex items-center gap-3 rounded-lg bg-zinc-900 dark:bg-white px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white dark:text-black transition hover:bg-zinc-800 dark:hover:bg-zinc-200 md:text-sm"
             >
               Start a Conversation
               <ArrowUpRight
@@ -105,7 +105,7 @@ export function Contact() {
               href="https://www.linkedin.com/in/piyapathongron/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500 transition-colors duration-200 hover:text-white"
+              className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500 transition-colors duration-200 hover:text-zinc-900 dark:hover:text-white"
             >
               {/* LinkedIn */}
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="transition-colors duration-200 group-hover:text-[#0A66C2]">
@@ -115,12 +115,12 @@ export function Contact() {
               </svg>
               LinkedIn
             </a>
-            <span className="text-zinc-800" aria-hidden>·</span>
+            <span className="text-zinc-400 dark:text-zinc-800" aria-hidden>·</span>
             <a
               href="https://github.com/piyapathongron-art"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500 transition-colors duration-200 hover:text-white"
+              className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500 transition-colors duration-200 hover:text-zinc-900 dark:hover:text-white"
             >
               {/* GitHub */}
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
