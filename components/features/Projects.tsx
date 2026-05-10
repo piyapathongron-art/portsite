@@ -40,10 +40,10 @@ const PROJECTS: Project[] = [
     title: "TARAVILLE",
     description: "Real Estate Management Dashboard.",
     bullets: [
-      "Engineered a responsive internal dashboard featuring interactive data tables to streamline the tracking of customer surveys and property statuses.",
-      "Designed and deployed scalable RESTful APIs to manage secure CRUD operations for employee assignments and internal workflows.",
+      "Built a role-gated enterprise dashboard (Admin / Staff / User) spanning 5 modules — house inventory, CRM, task assignments, walk-in/online surveys, and image management — with Zod schemas shared across the React client and Node backend to catch request/response drift at dev time, not runtime.",
+      "Implemented an audit-trail middleware that snapshots oldData and newData on every CREATE, UPDATE, and SOFT DELETE — no record is ever hard-deleted, making every mutation fully traceable and recoverable.",
     ],
-    techTags: ["REACT.JS", "TAILWIND CSS", "RESTFUL API"],
+    techTags: ["REACT.JS", "NODE.JS", "PRISMA", "MYSQL", "ZOD"],
     sourceUrl: "https://github.com/piyapathongron-art/Taraville-Frontend",
     sourceUrl2: "https://github.com/piyapathongron-art/Taraville",
   },

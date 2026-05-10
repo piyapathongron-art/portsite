@@ -13,13 +13,13 @@ type FakeEditorProps = {
 
 const span = (color: string, s: string) =>
   `<span style="color:${color}">${s}</span>`;
-const KW   = (s: string) => span("#C586C0", s);
-const ID   = (s: string) => span("#9CDCFE", s);
-const STR  = (s: string) => span("#CE9178", s);
-const BOOL = (s: string) => span("#569CD6", s);
-const FN   = (s: string) => span("#DCDCAA", s);
-const OP   = (s: string) => span("#9CA3AF", s);
-const TAG  = (s: string) => span("#569CD6", s);
+const KW    = (s: string) => span("#C586C0", s);
+const ID    = (s: string) => span("#9CDCFE", s);
+const STR   = (s: string) => span("#CE9178", s);
+const BOOL  = (s: string) => span("#569CD6", s);
+const FN    = (s: string) => span("#DCDCAA", s);
+const OP    = (s: string) => span("#9CA3AF", s);
+const TAG   = (s: string) => span("#569CD6", s);
 const PUNCT = (s: string) => span("#808080", s);
 const CMT   = (s: string) => span("#6A9955", s);
 
@@ -32,19 +32,22 @@ const jsxSelf  = (name: string) =>
 const attr = (name: string, value: string) =>
   `${ID(name)}${OP("=")}${STR(`&quot;${value}&quot;`)}`;
 
-const ARTY_LINES: string[] = [
+// Renders instantly — reader sees context before the punchline types
+const ARTY_STATIC: string[] = [
   `${KW("const")} ${ID("developer")} ${OP("=")} ${OP("{")}`,
   `  ${ID("name")}${OP(":")}      ${STR("&quot;Arty (Piyapat)&quot;")}${OP(",")}`,
-  `  ${ID("location")}${OP(":")}  ${STR("&quot;Bangkok, Thailand&quot;")}${OP(",")}`,
+  `  ${ID("location")}${OP(":")}  ${STR("&quot;Germany&quot;")}${OP(",")}`,
   `  ${ID("role")}${OP(":")}      ${STR("&quot;Full-Stack Developer&quot;")}${OP(",")}`,
   `  ${ID("stack")}${OP(":")}     ${OP("[")}${STR("&quot;Next.js&quot;")}${OP(",")} ${STR("&quot;Node.js&quot;")}${OP(",")} ${STR("&quot;Prisma&quot;")}${OP(",")} ${STR("&quot;TypeScript&quot;")}${OP("]")}${OP(",")}`,
   `  ${ID("available")}${OP(":")} ${BOOL("true")}${OP(",")}`,
   `${OP("};")}`,
-  ``,
   `${CMT("// I choose tools for reasons, not trends.")}`,
   `${CMT("// Prisma → schema-as-code. Zustand → no boilerplate.")}`,
   `${CMT("// Socket.io → only when polling won't cut it.")}`,
-  ``,
+];
+
+// The punchline — types out after a short pause
+const ARTY_TYPED: string[] = [
   `${KW("if")} ${OP("(")}${ID("you")}${OP(".")}${FN("haveAnIdea")}${OP("())")} ${OP("{")}`,
   `  ${ID("developer")}${OP(".")}${FN("build")}${OP("(")}${ID("it")}${OP(",")} ${OP("{")} ${ID("fast")}${OP(":")} ${BOOL("true")}${OP(",")} ${ID("clean")}${OP(":")} ${BOOL("true")} ${OP("}")}${OP(")")}${OP(";")}`,
   `${OP("}")}`,
@@ -65,9 +68,13 @@ const CONTACT_LINES: string[] = [
   `${OP("}")}`,
 ];
 
-const FILES: Record<EditorFile, string[]> = {
-  "arty.ts": ARTY_LINES,
-  "contact.tsx": CONTACT_LINES,
+type FileData =
+  | { type: "simple"; lines: string[] }
+  | { type: "split"; static: string[]; typed: string[] };
+
+const FILES: Record<EditorFile, FileData> = {
+  "arty.ts":      { type: "split", static: ARTY_STATIC, typed: ARTY_TYPED },
+  "contact.tsx":  { type: "simple", lines: CONTACT_LINES },
 };
 
 export function FakeEditor({
@@ -75,7 +82,11 @@ export function FakeEditor({
   waitUntilVisible = true,
   startDelay = 600,
 }: FakeEditorProps) {
-  const lines = FILES[file];
+  const data = FILES[file];
+  const totalLines =
+    data.type === "split"
+      ? data.static.length + data.typed.length
+      : data.lines.length;
 
   return (
     <div className="overflow-hidden rounded-xl border border-zinc-800 bg-[#0A0A0A] shadow-2xl shadow-black/60">
@@ -92,31 +103,61 @@ export function FakeEditor({
       {/* code body */}
       <pre className="overflow-x-auto whitespace-pre p-5 font-mono text-[12px] leading-[1.75] md:p-6 md:text-[13px]">
         <div className="flex gap-4">
+          {/* line numbers */}
           <div className="w-6 select-none text-right text-zinc-700">
-            {Array.from({ length: lines.length }, (_, i) => (
+            {Array.from({ length: totalLines }, (_, i) => (
               <div key={i}>{i + 1}</div>
             ))}
           </div>
+
+          {/* code content */}
           <div className="min-w-0 flex-1 text-zinc-300">
-            <TypeIt
-              options={{
-                speed: 15,
-                startDelay,
-                waitUntilVisible,
-                cursorChar: "▌",
-                cursorSpeed: 900,
-                html: true,
-                lifeLike: true,
-                loop: false,
-              }}
-              getBeforeInit={(instance) => {
-                lines.forEach((line, i) => {
-                  if (line.length > 0) instance.type(line);
-                  if (i < lines.length - 1) instance.break();
-                });
-                return instance;
-              }}
-            />
+            {data.type === "split" ? (
+              <>
+                {data.static.map((line, i) => (
+                  <div key={i} dangerouslySetInnerHTML={{ __html: line }} />
+                ))}
+                <TypeIt
+                  options={{
+                    speed: 20,
+                    startDelay,
+                    waitUntilVisible,
+                    cursorChar: "▌",
+                    cursorSpeed: 900,
+                    html: true,
+                    lifeLike: true,
+                    loop: false,
+                  }}
+                  getBeforeInit={(instance) => {
+                    data.typed.forEach((line, i) => {
+                      if (line.length > 0) instance.type(line);
+                      if (i < data.typed.length - 1) instance.break();
+                    });
+                    return instance;
+                  }}
+                />
+              </>
+            ) : (
+              <TypeIt
+                options={{
+                  speed: 15,
+                  startDelay,
+                  waitUntilVisible,
+                  cursorChar: "▌",
+                  cursorSpeed: 900,
+                  html: true,
+                  lifeLike: true,
+                  loop: false,
+                }}
+                getBeforeInit={(instance) => {
+                  data.lines.forEach((line, i) => {
+                    if (line.length > 0) instance.type(line);
+                    if (i < data.lines.length - 1) instance.break();
+                  });
+                  return instance;
+                }}
+              />
+            )}
           </div>
         </div>
       </pre>
