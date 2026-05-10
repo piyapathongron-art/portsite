@@ -52,9 +52,9 @@ const GROUPS: SkillGroup[] = [
     name: "Frameworks", title: "LIBRARY & FRAMEWORKS", cols: 6, rows: 4,
     skills: [
       { name: "React.js", category: "Frontend", selfScore: 10, marketWeight: 10, Icon: SiReact, color: "#61DAFB", pos: { col: 1, cs: 2, row: 1, rs: 2 } },
-      { name: "Express.js", category: "Backend", selfScore: 10, marketWeight: 8, Icon: SiExpress, color: "#FFFFFF", pos: { col: 3, cs: 2, row: 1, rs: 1 } },
+      { name: "Express.js", category: "Backend", selfScore: 10, marketWeight: 8, Icon: SiExpress, color: "var(--brand-mono)", pos: { col: 3, cs: 2, row: 1, rs: 1 } },
       { name: "Node.js", category: "Backend", selfScore: 10, marketWeight: 10, Icon: SiNodedotjs, color: "#339933", pos: { col: 5, cs: 2, row: 1, rs: 2 } },
-      { name: "Next.js", category: "Fullstack", selfScore: 7, marketWeight: 10, Icon: SiNextdotjs, color: "#FFFFFF", pos: { col: 3, cs: 2, row: 2, rs: 2 } },
+      { name: "Next.js", category: "Fullstack", selfScore: 7, marketWeight: 10, Icon: SiNextdotjs, color: "var(--brand-mono)", pos: { col: 3, cs: 2, row: 2, rs: 2 } },
       { name: "Vue.js", category: "Frontend", selfScore: 5, marketWeight: 6, Icon: SiVuedotjs, color: "#4FC08D", pos: { col: 1, cs: 1, row: 3, rs: 1 } },
       { name: "Nest.js", category: "Backend", selfScore: 5, marketWeight: 6, Icon: SiNestjs, color: "#E0234E", pos: { col: 2, cs: 1, row: 3, rs: 1 } },
       { name: "Zustand", category: "State", selfScore: 8, marketWeight: 6, Icon: Layers, color: "#FBBF24", pos: { col: 5, cs: 1, row: 3, rs: 1 } },
@@ -62,7 +62,7 @@ const GROUPS: SkillGroup[] = [
       { name: "Angular", category: "Frontend", selfScore: 5, marketWeight: 5, Icon: SiAngular, color: "#DD0031", pos: { col: 1, cs: 1, row: 4, rs: 1 } },
       { name: "Bcrypt", category: "Auth", selfScore: 8, marketWeight: 5, Icon: Lock, color: "#A1A1AA", pos: { col: 2, cs: 1, row: 4, rs: 1 } },
       { name: "Tailwind CSS", category: "Frontend", selfScore: 10, marketWeight: 9, Icon: SiTailwindcss, color: "#06B6D4", pos: { col: 3, cs: 2, row: 4, rs: 1 } },
-      { name: "Socket.io", category: "Realtime", selfScore: 8, marketWeight: 6, Icon: SiSocketdotio, color: "#FFFFFF", pos: { col: 5, cs: 2, row: 4, rs: 1 } },
+      { name: "Socket.io", category: "Realtime", selfScore: 8, marketWeight: 6, Icon: SiSocketdotio, color: "var(--brand-mono)", pos: { col: 5, cs: 2, row: 4, rs: 1 } },
     ],
   },
   {
@@ -73,7 +73,7 @@ const GROUPS: SkillGroup[] = [
       { name: "Supabase", category: "Database", selfScore: 8, marketWeight: 7, Icon: SiSupabase, color: "#3ECF8E", pos: { col: 1, cs: 1, row: 2, rs: 1 } },
       { name: "PostgreSQL", category: "Database", selfScore: 8, marketWeight: 9, Icon: SiPostgresql, color: "#4169E1", pos: { col: 2, cs: 2, row: 2, rs: 1 } },
       { name: "Firebase", category: "Database", selfScore: 6, marketWeight: 6, Icon: SiFirebase, color: "#FFCA28", pos: { col: 1, cs: 1, row: 3, rs: 1 } },
-      { name: "Prisma", category: "ORM", selfScore: 8, marketWeight: 8, Icon: SiPrisma, color: "#FFFFFF", pos: { col: 2, cs: 2, row: 3, rs: 1 } },
+      { name: "Prisma", category: "ORM", selfScore: 8, marketWeight: 8, Icon: SiPrisma, color: "var(--brand-mono)", pos: { col: 2, cs: 2, row: 3, rs: 1 } },
     ],
   },
   {
@@ -81,7 +81,7 @@ const GROUPS: SkillGroup[] = [
     skills: [
       { name: "Docker", category: "DevOps", selfScore: 6, marketWeight: 9, Icon: SiDocker, color: "#2496ED", pos: { col: 1, cs: 2, row: 1, rs: 1 } },
       { name: "Postman", category: "Tooling", selfScore: 8, marketWeight: 7, Icon: SiPostman, color: "#FF6C37", pos: { col: 3, cs: 2, row: 1, rs: 1 } },
-      { name: "Vercel", category: "Hosting", selfScore: 8, marketWeight: 7, Icon: SiVercel, color: "#FFFFFF", pos: { col: 1, cs: 2, row: 2, rs: 1 } },
+      { name: "Vercel", category: "Hosting", selfScore: 8, marketWeight: 7, Icon: SiVercel, color: "var(--brand-mono)", pos: { col: 1, cs: 2, row: 2, rs: 1 } },
       { name: "REST API", category: "Architecture", selfScore: 8, marketWeight: 9, Icon: Globe2, color: "#A78BFA", pos: { col: 3, cs: 2, row: 2, rs: 1 } },
       { name: "Render", category: "Hosting", selfScore: 8, marketWeight: 5, Icon: SiRender, color: "#46E3B7", pos: { col: 1, cs: 1, row: 3, rs: 1 } },
       { name: "Axios", category: "HTTP", selfScore: 8, marketWeight: 7, Icon: SiAxios, color: "#5A29E4", pos: { col: 2, cs: 2, row: 3, rs: 1 } },
@@ -91,18 +91,22 @@ const GROUPS: SkillGroup[] = [
   {
     name: "Tools", title: "TOOLS", cols: 3, rows: 3,
     skills: [
-      { name: "Git & GitHub", category: "Version Control", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "#FFFFFF", pos: { col: 1, cs: 3, row: 1, rs: 1 } },
+      { name: "Git & GitHub", category: "Version Control", selfScore: 10, marketWeight: 10, Icon: SiGithub, color: "var(--brand-mono)", pos: { col: 1, cs: 3, row: 1, rs: 1 } },
       { name: "AI Workflow", category: "Claude · Gemini", selfScore: 9, marketWeight: 8, Icon: Bot, color: "#A78BFA", pos: { col: 1, cs: 2, row: 3, rs: 1 } },
-      { name: "Cursor", category: "AI Editor", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "#FFFFFF", pos: { col: 1, cs: 1, row: 2, rs: 1 } },
+      { name: "Cursor", category: "AI Editor", selfScore: 8, marketWeight: 8, Icon: MousePointer2, color: "var(--brand-mono)", pos: { col: 1, cs: 1, row: 2, rs: 1 } },
       { name: "Figma", category: "Design", selfScore: 10, marketWeight: 9, Icon: SiFigma, color: "#F24E1E", pos: { col: 2, cs: 2, row: 2, rs: 1 } },
     ],
   },
 ];
 
+// Light mode needs visible base elevation + a darker hover shadow alongside
+// the colored accent glow; dark mode only needs the accent glow on hover.
 const CARD_BASE =
   "group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/60 bg-white dark:bg-[#101010] p-4 " +
-  "transition-all duration-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-[#151515] " +
-  "hover:shadow-[0_0_40px_-12px_var(--accent)]";
+  "shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-none " +
+  "transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-[#151515] " +
+  "hover:shadow-[0_14px_36px_-10px_rgba(0,0,0,0.18),0_0_40px_-12px_var(--accent)] " +
+  "dark:hover:shadow-[0_0_40px_-12px_var(--accent)]";
 
 function SkillCard({ skill }: { skill: Skill }) {
   const { name, category, selfScore, Icon, color, pos } = skill;

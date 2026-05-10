@@ -51,6 +51,29 @@
   --watermark-stroke:  rgba(0, 0, 0, 0.04);
   --glyph-stroke:      rgba(0, 0, 0, 0.08);
   --glyph-text-shadow: 0px 4px 4px rgba(0,0,0,0.06), 0px 30px 60px rgba(249,115,22,0.04);
+
+  /* Brand-mono accent — used by tech icons whose brand color is achromatic
+     (Next.js, Vercel, Express, Prisma, Socket.io, GitHub, Cursor). Flips per
+     theme so hover state stays visible against the card background. */
+  --brand-mono: #18181B;
+
+  /* FakeEditor chrome — VS Code Light Modern. */
+  --editor-bg:         #FFFFFF;
+  --editor-tab-bar:    #F8F8F8;
+  --editor-tab-border: #E5E5E5;
+  --editor-text:       #1F1F1F;
+  --editor-line-num:   #9CA3AF;
+
+  /* Syntax tokens — VS Code Light+. */
+  --tok-kw:    #0000FF;
+  --tok-id:    #001080;
+  --tok-str:   #A31515;
+  --tok-bool:  #0000FF;
+  --tok-fn:    #795E26;
+  --tok-op:    #000000;
+  --tok-tag:   #800000;
+  --tok-punct: #393A34;
+  --tok-cmt:   #008000;
 }
 
 .dark {
@@ -66,6 +89,63 @@
   --watermark-stroke:  rgba(255, 255, 255, 0.05);
   --glyph-stroke:      rgba(255, 255, 255, 0.15);
   --glyph-text-shadow: 0px -1px 1px rgba(255,255,255,0.1), 0px 4px 4px rgba(0,0,0,0.8), 0px 15px 30px rgba(0,0,0,0.9), 0px 30px 60px rgba(249,115,22,0.08);
+
+  --brand-mono: #FFFFFF;
+
+  /* FakeEditor chrome — Cursor / VS Code Dark+. */
+  --editor-bg:         #0A0A0A;
+  --editor-tab-bar:    #0F0F0F;
+  --editor-tab-border: #18181B;
+  --editor-text:       #D4D4D4;
+  --editor-line-num:   #404040;
+
+  /* Syntax tokens — VS Code Dark+. */
+  --tok-kw:    #C586C0;
+  --tok-id:    #9CDCFE;
+  --tok-str:   #CE9178;
+  --tok-bool:  #569CD6;
+  --tok-fn:    #DCDCAA;
+  --tok-op:    #9CA3AF;
+  --tok-tag:   #569CD6;
+  --tok-punct: #808080;
+  --tok-cmt:   #6A9955;
+}
+
+/* ── FakeEditor syntax tokens ────────────────────────────────────────────── */
+/* Plain CSS classes — TypeIt types these via dangerouslySetInnerHTML, so they
+   need to exist in raw stylesheet form (not Tailwind-compiled utilities). */
+.tok-kw    { color: var(--tok-kw); }
+.tok-id    { color: var(--tok-id); }
+.tok-str   { color: var(--tok-str); }
+.tok-bool  { color: var(--tok-bool); }
+.tok-fn    { color: var(--tok-fn); }
+.tok-op    { color: var(--tok-op); }
+.tok-tag   { color: var(--tok-tag); }
+.tok-punct { color: var(--tok-punct); }
+.tok-cmt   { color: var(--tok-cmt); }
+
+/* ── Theme transition (radial reveal from toggle click coords) ───────────── */
+/* Disable the default cross-fade and animate only the new layer's clip-path
+   so the incoming theme expands as a circle from the click origin. The old
+   layer stays fully visible underneath, so the new layer "paints over" it. */
+::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: theme-reveal 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  mix-blend-mode: normal;
+}
+
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
+  to   { clip-path: circle(150vmax at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
+}
+
+/* Defensive fallback — JS already short-circuits here, but if a transition
+   path is hit anyway, ensure reduced-motion users get an instant swap. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) { animation: none; }
 }
 
 body {

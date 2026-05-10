@@ -11,17 +11,19 @@ type FakeEditorProps = {
   startDelay?: number;
 };
 
-const span = (color: string, s: string) =>
-  `<span style="color:${color}">${s}</span>`;
-const KW = (s: string) => span("#C586C0", s);
-const ID = (s: string) => span("#9CDCFE", s);
-const STR = (s: string) => span("#CE9178", s);
-const BOOL = (s: string) => span("#569CD6", s);
-const FN = (s: string) => span("#DCDCAA", s);
-const OP = (s: string) => span("#9CA3AF", s);
-const TAG = (s: string) => span("#569CD6", s);
-const PUNCT = (s: string) => span("#808080", s);
-const CMT = (s: string) => span("#6A9955", s);
+// Class-based tokens — colors flip per theme via CSS vars in globals.css.
+// Using classes (not inline style="color:#xxx") so dark/light works for the
+// HTML strings TypeIt streams through dangerouslySetInnerHTML.
+const span = (cls: string, s: string) => `<span class="${cls}">${s}</span>`;
+const KW    = (s: string) => span("tok-kw", s);
+const ID    = (s: string) => span("tok-id", s);
+const STR   = (s: string) => span("tok-str", s);
+const BOOL  = (s: string) => span("tok-bool", s);
+const FN    = (s: string) => span("tok-fn", s);
+const OP    = (s: string) => span("tok-op", s);
+const TAG   = (s: string) => span("tok-tag", s);
+const PUNCT = (s: string) => span("tok-punct", s);
+const CMT   = (s: string) => span("tok-cmt", s);
 
 const jsxOpen = (tag: string, attrs?: string) =>
   `${PUNCT("&lt;")}${TAG(tag)}${attrs ? ` ${attrs}` : ""}${PUNCT("&gt;")}`;
@@ -89,9 +91,9 @@ export function FakeEditor({
       : data.lines.length;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-800 bg-[#0A0A0A] shadow-2xl shadow-black/60">
+    <div className="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-(--editor-bg) shadow-xl shadow-zinc-900/10 dark:shadow-2xl dark:shadow-black/60">
       {/* title bar */}
-      <div className="flex items-center gap-3 border-b border-zinc-900 bg-[#0F0F0F] px-4 py-2">
+      <div className="flex items-center gap-3 border-b border-(--editor-tab-border) bg-(--editor-tab-bar) px-4 py-2">
         <div className="flex gap-1.5">
           <span className="h-3 w-3 rounded-full bg-[#FF5F56]" />
           <span className="h-3 w-3 rounded-full bg-[#FFBD2E]" />
@@ -101,17 +103,17 @@ export function FakeEditor({
       </div>
 
       {/* code body */}
-      <pre className="overflow-x-auto whitespace-pre p-5 font-mono text-[12px] leading-[1.75] md:p-6 md:text-[13px]">
+      <pre className="overflow-x-auto whitespace-pre p-5 font-mono text-[12px] leading-[1.75] md:p-6 md:text-[13px] text-(--editor-text)">
         <div className="flex gap-4">
           {/* line numbers */}
-          <div className="w-6 select-none text-right text-zinc-700">
+          <div className="w-6 select-none text-right text-(--editor-line-num)">
             {Array.from({ length: totalLines }, (_, i) => (
               <div key={i}>{i + 1}</div>
             ))}
           </div>
 
           {/* code content */}
-          <div className="min-w-0 flex-1 text-zinc-300">
+          <div className="min-w-0 flex-1">
             {data.type === "split" ? (
               <>
                 {data.static.map((line, i) => (

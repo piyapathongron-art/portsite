@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { runThemeTransition } from "@/lib/theme-transition";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -19,7 +20,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={(e) => runThemeTransition(setTheme, isDark ? "light" : "dark", e)}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className={[
         "hidden md:inline-flex items-center justify-center",
