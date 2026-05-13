@@ -141,12 +141,10 @@ function MobileMockup({ title, imagePath, imageWidth, imageHeight }: {
 }
 
 
-function BrowserMockup({ title, liveDemoUrl, imagePath, imageWidth, imageHeight }: {
+function BrowserMockup({ title, liveDemoUrl, imagePath }: {
   title: string;
   liveDemoUrl?: string;
   imagePath?: string;
-  imageWidth?: number;
-  imageHeight?: number;
 }) {
   return (
     <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80">
@@ -165,15 +163,14 @@ function BrowserMockup({ title, liveDemoUrl, imagePath, imageWidth, imageHeight 
           <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-200/60 dark:bg-zinc-900/60" />
         )}
       </div>
-      {/* screenshot – fills container width, height auto (no crop, no distort) */}
+      {/* screenshot – fills frame, anchored to top (shows hero/header of the page) */}
       <div className="absolute inset-0 top-9 overflow-hidden">
         {imagePath ? (
           <Image
             src={imagePath}
             alt={title}
-            width={imageWidth ?? 1920}
-            height={imageHeight ?? 959}
-            style={{ width: "100%", height: "auto", display: "block" }}
+            fill
+            className="object-cover object-top"
           />
         ) : (
           <span
@@ -204,7 +201,7 @@ function ProjectCard({ project }: { project: Project }) {
           {project.visualStyle === "mobile" ? (
             <MobileMockup title={project.title} imagePath={project.imagePath} imageWidth={project.imageWidth} imageHeight={project.imageHeight} />
           ) : (
-            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} imagePath={project.imagePath} imageWidth={project.imageWidth} imageHeight={project.imageHeight} />
+            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} imagePath={project.imagePath} />
           )}
         </div>
 
