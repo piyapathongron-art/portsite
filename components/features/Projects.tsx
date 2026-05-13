@@ -2,6 +2,7 @@
 
 import { motion, type MotionValue } from "framer-motion";
 import { Check, ArrowUpRight, Code2 } from "lucide-react";
+import Image from "next/image";
 
 type Project = {
   index: string;
@@ -15,6 +16,7 @@ type Project = {
   liveDemoUrl?: string;
   sourceUrl?: string;
   sourceUrl2?: string;
+  imagePath?: string;
 };
 
 const PROJECTS: Project[] = [
@@ -34,6 +36,7 @@ const PROJECTS: Project[] = [
     liveDemoUrl: "https://wongnork-frontend.vercel.app/",
     sourceUrl: "https://github.com/piyapathongron-art/wongnork_frontend",
     sourceUrl2: "https://github.com/piyapathongron-art/wongnork_backend",
+    imagePath: "/Wongnork.png",
   },
   {
     index: "02",
@@ -48,6 +51,7 @@ const PROJECTS: Project[] = [
     techTags: ["REACT.JS", "NODE.JS", "PRISMA", "MYSQL", "ZOD"],
     sourceUrl: "https://github.com/piyapathongron-art/Taraville-Frontend",
     sourceUrl2: "https://github.com/piyapathongron-art/Taraville",
+    imagePath: "/Taraville.png",
   },
   {
     index: "03",
@@ -62,10 +66,11 @@ const PROJECTS: Project[] = [
     techTags: ["NEXT.JS", "TYPESCRIPT", "ZUSTAND"],
     liveDemoUrl: "https://than-thong-daily-gold.vercel.app/",
     sourceUrl: "https://github.com/piyapathongron-art/ThanThongDailyGold",
+    imagePath: "/ThanThong.png",
   },
 ];
 
-function MobileMockup({ title }: { title: string }) {
+function MobileMockup({ title, imagePath }: { title: string; imagePath?: string }) {
   return (
     <div className="relative h-full w-full flex items-center justify-center">
       <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-orange-500/5 via-transparent to-transparent" />
@@ -75,13 +80,17 @@ function MobileMockup({ title }: { title: string }) {
         <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-14 h-3.5 rounded-full bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800/80" />
         {/* screen */}
         <div className="absolute inset-[3px] top-10 bottom-6 rounded-[2.5rem] overflow-hidden bg-[var(--bg-muted)]">
-          <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 via-transparent to-transparent" />
-          <span
-            className="absolute -bottom-2 -left-3 text-[3.2rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-            style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
-          >
-            {title}
-          </span>
+          {imagePath ? (
+            <Image src={imagePath} alt={title} fill className="object-cover object-top" />
+          ) : (
+            <span
+              className="absolute -bottom-2 -left-3 text-[3.2rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
+              style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
+            >
+              {title}
+            </span>
+          )}
+          <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 via-transparent to-transparent pointer-events-none" />
         </div>
         {/* home indicator */}
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-[3px] rounded-full bg-zinc-300/60 dark:bg-zinc-700/50" />
@@ -93,7 +102,7 @@ function MobileMockup({ title }: { title: string }) {
   );
 }
 
-function BrowserMockup({ title, liveDemoUrl }: { title: string; liveDemoUrl?: string }) {
+function BrowserMockup({ title, liveDemoUrl, imagePath }: { title: string; liveDemoUrl?: string; imagePath?: string }) {
   return (
     <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80">
       {/* browser chrome */}
@@ -113,13 +122,17 @@ function BrowserMockup({ title, liveDemoUrl }: { title: string; liveDemoUrl?: st
       </div>
       {/* branded visual */}
       <div className="absolute inset-0 top-9 overflow-hidden">
+        {imagePath ? (
+          <Image src={imagePath} alt={title} fill className="object-cover object-top" />
+        ) : (
+          <span
+            className="absolute -bottom-4 -left-2 text-[7rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
+            style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
+          >
+            {title}
+          </span>
+        )}
         <div className="absolute inset-0 bg-linear-to-br from-orange-500/6 via-transparent to-transparent pointer-events-none" />
-        <span
-          className="absolute -bottom-4 -left-2 text-[7rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-          style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
-        >
-          {title}
-        </span>
       </div>
     </div>
   );
@@ -138,9 +151,9 @@ function ProjectCard({ project }: { project: Project }) {
         {/* Mockup area (left ~55%) */}
         <div className="relative bg-[var(--bg-muted)] border-b lg:border-b-0 lg:border-r border-zinc-100 dark:border-zinc-900/80 p-6">
           {project.visualStyle === "mobile" ? (
-            <MobileMockup title={project.title} />
+            <MobileMockup title={project.title} imagePath={project.imagePath} />
           ) : (
-            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} />
+            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} imagePath={project.imagePath} />
           )}
         </div>
 
