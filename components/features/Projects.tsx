@@ -141,13 +141,18 @@ function MobileMockup({ title, imagePath, imageWidth, imageHeight }: {
 }
 
 
-function BrowserMockup({ title, liveDemoUrl, imagePath }: {
+function BrowserMockup({ title, liveDemoUrl, imagePath, imageWidth, imageHeight }: {
   title: string;
   liveDemoUrl?: string;
   imagePath?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }) {
+  const w = imageWidth ?? 1920;
+  const h = imageHeight ?? 959;
+
   return (
-    <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80">
+    <div className="relative w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80">
       {/* browser chrome */}
       <div className="h-9 flex items-center gap-2 px-4 border-b border-zinc-200/60 dark:border-zinc-900 bg-[var(--bg-surface)]">
         <span className="h-2.5 w-2.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
@@ -163,14 +168,14 @@ function BrowserMockup({ title, liveDemoUrl, imagePath }: {
           <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-200/60 dark:bg-zinc-900/60" />
         )}
       </div>
-      {/* screenshot – fills frame, anchored to top (shows hero/header of the page) */}
-      <div className="absolute inset-0 top-9 overflow-hidden">
+      {/* screenshot – height driven by image aspect ratio, no crop */}
+      <div className="relative w-full" style={{ aspectRatio: `${w} / ${h}` }}>
         {imagePath ? (
           <Image
             src={imagePath}
             alt={title}
             fill
-            className="object-cover object-top"
+            className="object-cover"
           />
         ) : (
           <span
@@ -197,11 +202,11 @@ function ProjectCard({ project }: { project: Project }) {
         </span>
 
         {/* Mockup area (left ~55%) */}
-        <div className="relative bg-[var(--bg-muted)] border-b lg:border-b-0 lg:border-r border-zinc-100 dark:border-zinc-900/80 p-6">
+        <div className="relative bg-[var(--bg-muted)] border-b lg:border-b-0 lg:border-r border-zinc-100 dark:border-zinc-900/80 p-6 flex items-center">
           {project.visualStyle === "mobile" ? (
             <MobileMockup title={project.title} imagePath={project.imagePath} imageWidth={project.imageWidth} imageHeight={project.imageHeight} />
           ) : (
-            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} imagePath={project.imagePath} />
+            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} imagePath={project.imagePath} imageWidth={project.imageWidth} imageHeight={project.imageHeight} />
           )}
         </div>
 
