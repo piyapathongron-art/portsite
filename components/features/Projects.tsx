@@ -17,6 +17,8 @@ type Project = {
   sourceUrl?: string;
   sourceUrl2?: string;
   imagePath?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
 const PROJECTS: Project[] = [
@@ -37,6 +39,8 @@ const PROJECTS: Project[] = [
     sourceUrl: "https://github.com/piyapathongron-art/wongnork_frontend",
     sourceUrl2: "https://github.com/piyapathongron-art/wongnork_backend",
     imagePath: "/Wongnork.png",
+    imageWidth: 1170,
+    imageHeight: 2101,
   },
   {
     index: "02",
@@ -52,6 +56,8 @@ const PROJECTS: Project[] = [
     sourceUrl: "https://github.com/piyapathongron-art/Taraville-Frontend",
     sourceUrl2: "https://github.com/piyapathongron-art/Taraville",
     imagePath: "/Taraville.png",
+    imageWidth: 1920,
+    imageHeight: 959,
   },
   {
     index: "03",
@@ -67,42 +73,81 @@ const PROJECTS: Project[] = [
     liveDemoUrl: "https://than-thong-daily-gold.vercel.app/",
     sourceUrl: "https://github.com/piyapathongron-art/ThanThongDailyGold",
     imagePath: "/ThanThong.png",
+    imageWidth: 3024,
+    imageHeight: 1650,
   },
 ];
 
-function MobileMockup({ title, imagePath }: { title: string; imagePath?: string }) {
+function MobileMockup({ title, imagePath, imageWidth, imageHeight }: {
+  title: string;
+  imagePath?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+}) {
+  const w = imageWidth ?? 1170;
+  const h = imageHeight ?? 2101;
+
   return (
-    <div className="relative h-full w-full flex items-center justify-center">
+    <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-orange-500/5 via-transparent to-transparent" />
-      {/* phone shell */}
-      <div className="relative w-[185px] h-[385px] rounded-[3rem] border-2 border-zinc-300 dark:border-zinc-700/60 bg-[var(--bg-surface)] shadow-[0_0_80px_-20px_rgba(249,115,22,0.22)]">
-        {/* dynamic island */}
-        <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-14 h-3.5 rounded-full bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800/80" />
-        {/* screen */}
-        <div className="absolute inset-[3px] top-10 bottom-6 rounded-[2.5rem] overflow-hidden bg-[var(--bg-muted)]">
-          {imagePath ? (
-            <Image src={imagePath} alt={title} fill className="object-cover object-top" />
-          ) : (
-            <span
-              className="absolute -bottom-2 -left-3 text-[3.2rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-              style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
-            >
-              {title}
-            </span>
-          )}
-          <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 via-transparent to-transparent pointer-events-none" />
+
+      {/* Phone wrapper: height = 100% of parent, width auto-sized by aspect-ratio of the image */}
+      <div
+        className="relative h-full max-h-full"
+        style={{ aspectRatio: `${w} / ${h}` }}
+      >
+        {/* Metal frame */}
+        <div className="absolute inset-0 rounded-[3.5rem] bg-zinc-300 dark:bg-zinc-800 shadow-[0_0_80px_-20px_rgba(249,115,22,0.22)] border border-zinc-200 dark:border-zinc-700/50">
+
+          {/* Hardware Buttons — positions as % of frame height */}
+          <div className="absolute -left-[2px] w-[2px] h-[5%] bg-zinc-400 dark:bg-zinc-600 rounded-l-sm" style={{ top: "18%" }} />
+          <div className="absolute -left-[2px] w-[2px] h-[8%] bg-zinc-400 dark:bg-zinc-600 rounded-l-sm" style={{ top: "27%" }} />
+          <div className="absolute -left-[2px] w-[2px] h-[8%] bg-zinc-400 dark:bg-zinc-600 rounded-l-sm" style={{ top: "39%" }} />
+          <div className="absolute -right-[2px] w-[2px] h-[10%] bg-zinc-400 dark:bg-zinc-600 rounded-r-sm" style={{ top: "30%" }} />
+
+          {/* Black Bezel */}
+          <div className="absolute inset-[3px] rounded-[3.3rem] bg-black p-[8px]">
+            {/* Screen — fills bezel exactly, same aspect ratio as image → no crop, no distort */}
+            <div className="relative h-full w-full rounded-[2.8rem] overflow-hidden bg-zinc-900">
+              {imagePath ? (
+                <Image src={imagePath} alt={title} fill className="object-cover" />
+              ) : (
+                <span
+                  className="absolute -bottom-2 -left-3 text-[4rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
+                  style={{ WebkitTextStroke: "1px var(--watermark-stroke)", color: "transparent" }}
+                >
+                  {title}
+                </span>
+              )}
+              <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 via-transparent to-transparent pointer-events-none z-10" />
+
+              {/* Dynamic Island */}
+              <div className="absolute top-[1.5%] left-1/2 -translate-x-1/2 w-[38%] h-[3.5%] rounded-full bg-black z-20 flex items-center justify-end px-2.5 border border-white/5 shadow-sm">
+                <div className="w-[12%] aspect-square rounded-full bg-[#0a0a0a] border border-white/5" />
+              </div>
+
+              {/* Home Indicator */}
+              <div className="absolute bottom-[1.5%] left-1/2 -translate-x-1/2 w-[35%] h-[0.6%] min-h-[4px] rounded-full bg-white/40 mix-blend-screen z-20" />
+            </div>
+          </div>
         </div>
-        {/* home indicator */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-[3px] rounded-full bg-zinc-300/60 dark:bg-zinc-700/50" />
       </div>
-      <span className="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.28em] text-zinc-400 dark:text-zinc-700">
+
+      <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.28em] text-zinc-400 dark:text-zinc-700">
         Mobile First
       </span>
     </div>
   );
 }
 
-function BrowserMockup({ title, liveDemoUrl, imagePath }: { title: string; liveDemoUrl?: string; imagePath?: string }) {
+
+function BrowserMockup({ title, liveDemoUrl, imagePath, imageWidth, imageHeight }: {
+  title: string;
+  liveDemoUrl?: string;
+  imagePath?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+}) {
   return (
     <div className="relative h-full w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80">
       {/* browser chrome */}
@@ -120,10 +165,16 @@ function BrowserMockup({ title, liveDemoUrl, imagePath }: { title: string; liveD
           <span className="ml-3 h-5 flex-1 max-w-[420px] rounded bg-zinc-200/60 dark:bg-zinc-900/60" />
         )}
       </div>
-      {/* branded visual */}
+      {/* screenshot – fills container width, height auto (no crop, no distort) */}
       <div className="absolute inset-0 top-9 overflow-hidden">
         {imagePath ? (
-          <Image src={imagePath} alt={title} fill className="object-cover object-top" />
+          <Image
+            src={imagePath}
+            alt={title}
+            width={imageWidth ?? 1920}
+            height={imageHeight ?? 959}
+            style={{ width: "100%", height: "auto", display: "block" }}
+          />
         ) : (
           <span
             className="absolute -bottom-4 -left-2 text-[7rem] font-black uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
@@ -151,9 +202,9 @@ function ProjectCard({ project }: { project: Project }) {
         {/* Mockup area (left ~55%) */}
         <div className="relative bg-[var(--bg-muted)] border-b lg:border-b-0 lg:border-r border-zinc-100 dark:border-zinc-900/80 p-6">
           {project.visualStyle === "mobile" ? (
-            <MobileMockup title={project.title} imagePath={project.imagePath} />
+            <MobileMockup title={project.title} imagePath={project.imagePath} imageWidth={project.imageWidth} imageHeight={project.imageHeight} />
           ) : (
-            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} imagePath={project.imagePath} />
+            <BrowserMockup title={project.title} liveDemoUrl={project.liveDemoUrl} imagePath={project.imagePath} imageWidth={project.imageWidth} imageHeight={project.imageHeight} />
           )}
         </div>
 
