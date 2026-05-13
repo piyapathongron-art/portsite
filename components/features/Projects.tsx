@@ -152,7 +152,9 @@ function BrowserMockup({ title, liveDemoUrl, imagePath, imageWidth, imageHeight 
   const h = imageHeight ?? 959;
 
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80">
+    <div className="relative w-full">
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-orange-500/5 via-transparent to-transparent" />
+      <div className="relative w-full rounded-2xl overflow-hidden bg-[var(--bg-elevated)] border border-zinc-100 dark:border-zinc-900/80 shadow-[0_0_80px_-20px_rgba(249,115,22,0.22)]">
       {/* browser chrome */}
       <div className="h-9 flex items-center gap-2 px-4 border-b border-zinc-200/60 dark:border-zinc-900 bg-[var(--bg-surface)]">
         <span className="h-2.5 w-2.5 rounded-full bg-zinc-400 dark:bg-zinc-700" />
@@ -187,6 +189,7 @@ function BrowserMockup({ title, liveDemoUrl, imagePath, imageWidth, imageHeight 
         )}
         <div className="absolute inset-0 bg-linear-to-br from-orange-500/6 via-transparent to-transparent pointer-events-none" />
       </div>
+    </div>
     </div>
   );
 }
